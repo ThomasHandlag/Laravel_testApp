@@ -1,0 +1,71 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@layer base {
+    .overlay {
+        width: 100%;
+        position: fixed;
+        background: rgb(52, 200, 255);
+        background: linear-gradient(
+            90deg,
+            rgba(52, 200, 255, 1) 0%,
+            rgba(208, 35, 251, 1) 100%
+        );
+        height: 0%;
+        transition: all ease-in-out 0.5s;
+        animation: load;
+        visibility: hidden;
+        overflow-x: hidden;
+        top: 0px;
+    }
+    .is-showed {
+        height: 100%;
+        visibility: visible;
+    }
+    .is-hidden {
+        height: 0%;
+        visibility: hidden;
+    }
+    @keyframes load {
+        0% {
+            height: 0%;
+        }
+        25% {
+            height: 25%;
+        }
+        50% {
+            height: 50%;
+        }
+        75% {
+            height: 75%;
+        }
+        100% {
+            height: 100%;
+        }
+    }
+    .btn {
+        color: rgb(0, 0, 0);
+    }
+    .btn-ln {
+        background: radial-gradient(
+            circle,
+            rgba(52, 200, 255, 1) 0%,
+            rgba(208, 35, 251, 1) 100%
+        );
+    }
+    .circle {
+        border-radius: 50%;
+    }
+    .fs-30 {
+        font-size: 30px;
+    }
+    .fs-20 {
+        font-size: 20px;
+    }
+    .btn-white {
+        background: rgb(255, 255, 255);
+    }
+    .tx-cl-white {
+        color: black;
+    }
+}
