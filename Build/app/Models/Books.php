@@ -15,6 +15,9 @@ class Books extends Model
         'path_img',
         'decription',
         'category',
+        'formated',
+        'mass',
+        'sizebook',
     ];
     use HasFactory;
 }

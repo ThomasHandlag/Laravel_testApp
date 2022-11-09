@@ -1,5 +1,4 @@
 import React from "react";
-import book5 from "../../images/book5.png";
 export default function IntroScene() {
     return (
         <>

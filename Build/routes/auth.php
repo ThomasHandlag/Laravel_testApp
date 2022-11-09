@@ -8,7 +8,14 @@ use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerifyEmailController;
+use App\Http\Controllers\BooksController;
+use App\Http\Controllers\BuyController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\DetailController;
+use App\Http\Controllers\SettingController;
+use App\Http\Controllers\ShopController;
+use App\Http\Controllers\PasswordController;
+
 
 Route::middleware('guest')->group(function () {
     Route::get('register', [RegisteredUserController::class, 'create'])
@@ -32,6 +39,10 @@ Route::middleware('guest')->group(function () {
 
     Route::post('reset-password', [NewPasswordController::class, 'store'])
                 ->name('password.update');
+    Route::get('detail.book.guest', [DetailController::class, 'create'])->name('detail.book');
+
+    Route::get('search', [BooksController::class, 'create']);
+
 });
 
 Route::middleware('auth')->group(function () {
@@ -53,4 +64,31 @@ Route::middleware('auth')->group(function () {
 
     Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
                 ->name('logout');
+    Route::get('detail.book.auth', [DetailController::class, 'show'])->name('detail.book.auth');
+
+    Route::get('settings.auth', [SettingController::class, 'create'])->name('show.settings');
+
+    Route::post('upload.user.image', [SettingController::class, 'setImage']);
+
+    Route::get('buy.book', [BuyController::class, 'index'])->name('buy.book.auth');
+
+    Route::get('/shopping.auth', [ShopController::class, 'create'])->name('shopping.auth');
+
+    Route::post('addcart.auth', [BooksController::class, 'store']);
+
+    Route::get('remove.cart', [ShopController::class, 'delete']);
+
+    Route::post('update.user.infor', [SettingController::class, 'store'])->name('update.infor');
+
+    Route::get('delete.user', [SettingController::class, 'delete'])->name('delete.user');
+
+    Route::get('update.password', [PasswordController::class, 'create']);
+
+    Route::post('save.password', [PasswordController::class, 'store'])->name('save.password');
+
+    Route::post('send.code', [BuyController::class, 'create']);
+
+    Route::post('request.buy', [BuyController::class, 'store']);
+
+    Route::post('request.payment', [BuyController::class, 'show']);
 });

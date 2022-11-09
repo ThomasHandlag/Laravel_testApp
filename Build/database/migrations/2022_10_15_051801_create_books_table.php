@@ -20,7 +20,9 @@ return new class extends Migration
             $table->integer('price')->nullable();
             $table->string('path_img')->nullable();
             $table->string('description')->nullable();
-            $table->string('category')->nullable();;
+            $table->foreignId('catalog_id');
+            $table->string('type_book')->nullable();
+            $table->string('mass')->nullable();
             $table->timestamps();
         });
     }

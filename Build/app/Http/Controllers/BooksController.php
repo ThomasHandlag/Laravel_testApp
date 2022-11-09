@@ -6,11 +6,10 @@ use App\Models\Books;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
-use Nette\Utils\Json;
 
 class BooksController extends Controller
 {
-  
+
     /**
      * Display a listing of the resource.
      *
@@ -18,7 +17,25 @@ class BooksController extends Controller
      */
     public function index()
     {
-        return Inertia::render('Home', ['data' => DB::select("SELECT * FROM books")]);
+        $data = [];
+        $catalogs = DB::select("SELECT * FROM catalogs ORDER BY id");
+        $books = DB::select("SELECT * FROM books ORDER BY catalog_id");
+
+        $maps = function ($arr_p, $arr_ch) {
+            $books = [];
+            foreach ($arr_ch as $ch) {
+                if ($arr_p->id === $ch->catalog_id)
+                    array_push($books, $ch);
+            }
+            // $books = array_slice($books, 0, 5);
+            $arr_p->books = $books;
+            return $arr_p;
+        };
+
+        foreach ($catalogs as $catalog) {
+            array_push($data, $maps($catalog, $books));
+        }
+        return DB::connection()->getDatabaseName() ? Inertia::render('Home', ['data' => $data]) : null;
     }
 
     /**
@@ -26,9 +43,11 @@ class BooksController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        
+        $s_key = strtolower($request->get('s_key'));
+        $s_data = DB::select("SELECT * FROM books WHERE title LIKE '%$s_key%'");
+        return Inertia::render('Search', ['s_key' => $s_data]);
     }
 
     /**
@@ -39,7 +58,20 @@ class BooksController extends Controller
      */
     public function store(Request $request)
     {
-    //    return Inertia::render('Home', ['data' => DB::select("SELECT * FROM books"), 'auth' => ['username'=>$request->session('user')]]);
+        $user_id = $request->get('id');
+        $book_id = $request->get('book_id');
+        $temp = DB::select("SELECT * FROM cart WHERE user_id = $user_id");
+        DB::insert("INSERT INTO cart(user_id, book_id) VALUES ($user_id, $book_id)");
+
+        //share cart data
+        // $temp = DB::select("SELECT * FROM cart WHERE user_id = $user_id");
+        // $accept_cart = "";
+        // foreach ($temp as $item) {
+        //     $accept_cart .= $item->id . ",";
+        // }
+        // $accept_cart =  substr_replace($accept_cart, "", -1);
+        // $value = DB::select("SELECT * FROM books WHERE id IN($accept_cart)");
+        // Inertia::share('cart', $value);
     }
 
     /**

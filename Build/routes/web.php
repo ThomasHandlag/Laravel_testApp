@@ -1,7 +1,8 @@
 <?php
 
 use App\Http\Controllers\BooksController;
-use App\Http\Controllers\Test;
+use App\Http\Controllers\ShopController;
+use App\Mail\VerificationMail;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -16,10 +17,14 @@ use Inertia\Inertia;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
 Route::get('/', [BooksController::class, 'index'])->name('home');
-Route::get('/shopping', function (){
-    return Inertia::render('Shopping');
+Route::get('/shopping', [ShopController::class, 'index']);
+
+Route::get('/email', function() {
+    return new VerificationMail(rand(1000, 9999));
 });
+
 Route::get('/welcome', function () {
     return Inertia::render('Welcome', [
         'canLogin' => Route::has('login'),
@@ -33,4 +38,4 @@ Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
