@@ -86,9 +86,9 @@ Route::middleware('auth')->group(function () {
 
     Route::post('save.password', [PasswordController::class, 'store'])->name('save.password');
 
-    Route::post('send.code', [BuyController::class, 'create']);
+    Route::get('send.code', [BuyController::class, 'create']);
 
-    Route::post('request.buy', [BuyController::class, 'store']);
+    Route::post('request.buy', [BuyController::class, 'show']);
 
-    Route::post('request.payment', [BuyController::class, 'show']);
+    Route::get('request.payment', [BuyController::class, 'store'])->name('request.payment');
 });

@@ -21,10 +21,6 @@ use Inertia\Inertia;
 Route::get('/', [BooksController::class, 'index'])->name('home');
 Route::get('/shopping', [ShopController::class, 'index']);
 
-Route::get('/email', function() {
-    return new VerificationMail(rand(1000, 9999));
-});
-
 Route::get('/welcome', function () {
     return Inertia::render('Welcome', [
         'canLogin' => Route::has('login'),
