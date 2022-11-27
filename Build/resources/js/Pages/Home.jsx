@@ -15,16 +15,6 @@ export default function Home(props) {
     const [searchKey, setSearchKey] = useState("");
 
     let filter = [];
-
-    // const sorting = (ck, catalog) => {
-    //     return catalog 
-    //         .splice(
-    //             catalog.findIndex((e) => e.catalog_name === ck.target.value),
-    //             1
-    //         )
-    //         .concat(catalog);
-    // };
-
     props.data.map((e) => {
         filter.push(
             <FilterButton
