@@ -34,15 +34,14 @@ export default function Register() {
         <GuestLayout>
             <Head title="Register" />
 
-            <form onSubmit={submit}>
-                <div>
-                    <InputLabel forInput="name" value="Name" />
-
+            <form onSubmit={submit} className="flex flex-col gap-5">
+                <div className="p-2">
                     <TextInput
                         type="text"
                         name="name"
                         value={data.name}
-                        className="mt-1 block w-full"
+                        className="mt-1 block w-full  border-0 placeholder-slate-400"
+                        placeholder={'Name'}
                         autoComplete="name"
                         isFocused={true}
                         handleChange={onHandleChange}
@@ -50,16 +49,15 @@ export default function Register() {
                     />
 
                     <InputError message={errors.name} className="mt-2" />
-                </div>
+                </div>  
 
-                <div className="mt-4">
-                    <InputLabel forInput="email" value="Email" />
-
+                <div className="p-2">
                     <TextInput
                         type="email"
                         name="email"
                         value={data.email}
-                        className="mt-1 block w-full"
+                        className="mt-1 block w-full  border-0 placeholder-slate-400"
+                        placeholder={'Email'}
                         autoComplete="username"
                         handleChange={onHandleChange}
                         required
@@ -68,14 +66,13 @@ export default function Register() {
                     <InputError message={errors.email} className="mt-2" />
                 </div>
 
-                <div className="mt-4">
-                    <InputLabel forInput="password" value="Password" />
-
+                <div className="p-2">
                     <TextInput
                         type="password"
                         name="password"
                         value={data.password}
-                        className="mt-1 block w-full"
+                        className="mt-1 block w-full  border-0 placeholder-slate-400"
+                        placeholder={'Password'}
                         autoComplete="new-password"
                         handleChange={onHandleChange}
                         required
@@ -84,23 +81,21 @@ export default function Register() {
                     <InputError message={errors.password} className="mt-2" />
                 </div>
 
-                <div className="mt-4">
-                    <InputLabel forInput="password_confirmation" value="Confirm Password" />
-
+                <div className="p-2">
                     <TextInput
                         type="password"
                         name="password_confirmation"
                         value={data.password_confirmation}
-                        className="mt-1 block w-full"
+                        className="mt-1 block w-full  border-0 placeholder-slate-400"
+                        placeholder={'Confirm password'}
                         handleChange={onHandleChange}
                         required
                     />
-
                     <InputError message={errors.password_confirmation} className="mt-2" />
                 </div>
 
                 <div className="flex items-center justify-end mt-4">
-                    <Link href={route('login')} className="underline text-sm text-gray-600 hover:text-gray-900">
+                    <Link href={route('login')} className="underline text-sm text-gray-300 hover:text-gray-100">
                         Already registered?
                     </Link>
 

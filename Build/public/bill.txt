@@ -1,0 +1,4 @@
+Name: Thuong 
+ Serial number: 784024, 
+ Toltal: 100 
+ Quantity: 1

@@ -1,6 +1,11 @@
 import React from "react";
-import book5 from "../../images/book5.png";
-export default function IntroScene() {
+import { Inertia } from "@inertiajs/inertia";
+import { usePage } from "@inertiajs/inertia-react";
+
+export default function IntroScene({ attr }) {
+    const url = usePage().props.auth.user
+        ? "detail.book.auth"
+        : "detail.book.guest";
     return (
         <>
             <div className="w-full bg-gradient-to-tr from-blue-700 via-indigo-900 to-violet-800 h-screen flex justify-center">
@@ -14,7 +19,17 @@ export default function IntroScene() {
                         </h2>
                     </div>
                     <div className="flex items-center justify-center">
-                        <button className="text-[20px] bg-indigo-400 text-white rounded-3xl px-5 py-2 hover:bg-gradient-to-r from-indigo-600 to-indigo-500 duration-700 focus:rounded-3xl">
+                        <img
+                            src={attr[0].path_img}
+                            className="w-[300px] h-[450px]"
+                        />
+                        <div className="bg-green-500 w-[100px] capitalize absolute">best sale</div>
+                        <button
+                            onClick={() => {
+                                Inertia.get(url, { id: attr[0].id });
+                            }}
+                            className="text-[20px] bg-indigo-400 text-white rounded-3xl px-5 py-2 hover:bg-gradient-to-r from-indigo-600 to-indigo-400 duration-700 focus:rounded-3xl absolute"
+                        >
                             Buy now
                         </button>
                     </div>

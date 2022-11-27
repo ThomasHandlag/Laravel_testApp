@@ -10,16 +10,18 @@ import {
     BsPinterest,
     BsPencilSquare,
 } from "react-icons/bs/index";
-import { RiArrowDropDownLine, RiArrowDropUpLine } from "react-icons/ri/index";
-import lake from "../../images/lake.png";
-import { Link } from "@inertiajs/inertia-react";
+import { RiArrowDropDownLine } from "react-icons/ri/index";
+import guest from "../../images/guest.png";
+import { Link, usePage } from "@inertiajs/inertia-react";
 import Dropdown from "@/Components/Dropdown";
+import { AiOutlineShoppingCart } from "react-icons/ai/index";
 
 export default function Header({ active, auth }) {
     const [isActive, setActive] = useState(false);
     const toggleNav = () => {
         setActive(!isActive);
     };
+    const cart_num = usePage().props.cr_cart[0]['cart_num'];
     return (
         <header
             className={
@@ -38,12 +40,29 @@ export default function Header({ active, auth }) {
                             }}
                         />
                     </Link>
-                    <button
-                        onClick={toggleNav}
-                        className="hover:bg-white fs-30 rounded-md hover:text-gray-900 text-cyan-300 duration-200"
-                    >
-                        <BiMenuAltRight />
-                    </button>
+                    <div className="flex justify-between lg:gap-10 gap-5">
+                        {active == "shopping" ? (
+                            ""
+                        ) : (
+                            <div className="hover:bg-white rounded-xl text-cyan-500 hover:text-black flex">
+                                <Link
+                                    className="p-2 text-[30px]"
+                                    href="/shopping"
+                                >
+                                    <AiOutlineShoppingCart />
+                                </Link>
+                                <span className="w-[25px] h-[25px] border-rounded-[50%]">
+                                    {cart_num ? cart_num : 0}
+                                </span>
+                            </div>
+                        )}
+                        <button
+                            onClick={toggleNav}
+                            className="hover:bg-white fs-30 rounded-md hover:text-gray-900 text-cyan-300 duration-200"
+                        >
+                            <BiMenuAltRight />
+                        </button>
+                    </div>
                 </div>
                 <div
                     className={
@@ -67,7 +86,7 @@ export default function Header({ active, auth }) {
                                 <a
                                     className="circle text-[35px] text-black hover:text-white duration-150"
                                     target="_blank"
-                                    href="https:/github.com"
+                                    href="https://github.com/ThomasHandlag/Laravel_testApp"
                                 >
                                     <BsGithub />
                                 </a>
@@ -104,7 +123,7 @@ export default function Header({ active, auth }) {
                             </li>
                             <li className="p-2 uppercase text-cyan-400">
                                 <NavLink
-                                    href="/shopping"
+                                    href={"/shopping"}
                                     active={active == "shopping" ? true : false}
                                 >
                                     shopping
@@ -120,10 +139,10 @@ export default function Header({ active, auth }) {
                             </li>
                             <li className="p-2 uppercase">
                                 <NavLink
-                                    href="/contact"
-                                    active={active == "contact" ? true : false}
+                                    href="/orders"
+                                    active={active == "history" ? true : false}
                                 >
-                                    contact
+                                    history
                                 </NavLink>
                             </li>
                         </ul>
@@ -140,8 +159,18 @@ export default function Header({ active, auth }) {
                         <div className="flex flex-col items-center">
                             <div className="rounded-[50%]">
                                 <img
-                                    src={lake}
-                                    className="rounded-[50%] border-solid border-2 border-emerald-300 w-[50px] h-[50px] lg:w-[100px] lg:h-[100px] relative"
+                                    src={
+                                        auth.auth.user
+                                            ? auth.auth.user.path_img
+                                            : guest
+                                    }
+                                    className={
+                                        auth.auth.user
+                                            ? "rounded-[50%] border-solid border-2 border-emerald-300 w-[50px] h-[50px] lg:w-[150px] lg:h-[150px] relative"
+                                            : "bg-white " +
+                                              "rounded-[50%] border-solid border-2 border-emerald-300 w-[50px] h-[50px] lg:w-[100px] lg:h-[100px] relative"
+                                    }
+
                                 />
                                 {/* <button><BsPencilSquare className="absolute"/></button> */}
                             </div>
@@ -149,25 +178,50 @@ export default function Header({ active, auth }) {
                                 <Dropdown>
                                     <Dropdown.Trigger>
                                         <button className="text-[15px] lg:text-[20px] pt-5 border-b-2 border-violet-900">
-                                            {auth.user ? auth.user.name : ""}
+                                            {auth.auth.user
+                                                ? auth.auth.user.name
+                                                : ""}
                                             <RiArrowDropDownLine className="text-[30px] text-black cursor-pointer" />
                                         </button>
                                     </Dropdown.Trigger>
                                     <Dropdown.Content>
-                                        <Dropdown.Link
-                                            href={route("home")}
-                                            method="get"
-                                            as="button"
-                                        >
-                                            Setting
-                                        </Dropdown.Link>
-                                        <Dropdown.Link
-                                            href={route("logout")}
-                                            method="post"
-                                            as="button"
-                                        >
-                                            Log Out
-                                        </Dropdown.Link>
+                                        {auth.auth.user ? (
+                                            <>
+                                                <Dropdown.Link
+                                                    href={route(
+                                                        "show.settings"
+                                                    )}
+                                                    method="get"
+                                                    as="button"
+                                                >
+                                                    Setting
+                                                </Dropdown.Link>
+                                                <Dropdown.Link
+                                                    href={route("logout")}
+                                                    method="post"
+                                                    as="button"
+                                                >
+                                                    Log Out
+                                                </Dropdown.Link>
+                                            </>
+                                        ) : (
+                                            <>
+                                                <Dropdown.Link
+                                                    href={route("register")}
+                                                    method="get"
+                                                    as="button"
+                                                >
+                                                    Register
+                                                </Dropdown.Link>
+                                                <Dropdown.Link
+                                                    href={route("login")}
+                                                    method="get"
+                                                    as="button"
+                                                >
+                                                    Log in
+                                                </Dropdown.Link>
+                                            </>
+                                        )}
                                     </Dropdown.Content>
                                 </Dropdown>
                             </div>

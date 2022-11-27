@@ -1,7 +1,6 @@
 import React, { useState, useContext, Fragment } from "react";
 import { Link } from "@inertiajs/inertia-react";
 import { Transition } from "@headlessui/react";
-import { RiArrowRightDownLine } from "react-icons/ri";
 
 const DropDownContext = React.createContext();
 
@@ -94,7 +93,7 @@ const DropdownLink = ({ href, method = "post", as = "a", children }) => {
             href={href}
             method={method}
             as={as}
-            className="block w-full px-4 py-2 text-left text-sm leading-5 text-gray-800 hover:bg-gray-200 focus:outline-none focus:bg-gray-100 transition duration-150 ease-in-out"
+            className="block w-full px-4 py-2 text-left text-sm leading-5 text-gray-800 hover:bg-slate-300 focus:outline-none focus:bg-blue-400 transition duration-150 ease-in-out"
         >
             {children}
         </Link>
