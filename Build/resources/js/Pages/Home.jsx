@@ -104,11 +104,12 @@ export default function Home(props) {
                     {props.data.map((element) => (
                         <Catalog
                             title={element.catalog_name}
+
                             key={element.id}
                             key_s={element.key_s}
                             books={element.books}
                         />
-                    ))}
+                    ))} */console.log(props)}
                 </div>
             </div>
             <Footer />
