@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Inertia\Middleware;
 use Tightenco\Ziggy\Ziggy;
 
@@ -43,6 +44,7 @@ class HandleInertiaRequests extends Middleware
                     'location' => $request->url(),
                 ]);
             },
+            'cr_cart' => DB::select("SELECT COUNT(id) AS cart_num FROM cart WHERE user_id = :user_id", ['user_id' => $request->user() ? $request->user()->id : 0]),
         ]);
     }
 }

@@ -9,31 +9,30 @@ import Footer from "@/Components/Footer";
 import Catalog from "@/Components/Catalog";
 import { useState } from "react";
 import { Inertia } from "@inertiajs/inertia";
+import Post from "@/Components/Post";
 
 export default function Home(props) {
     const [searchKey, setSearchKey] = useState("");
-    const [catalog, setCatalog] = useState(props.data);
-    const [isCatalog, setIsCatalog] = useState(true);
 
     let filter = [];
 
-    const sorting = (ck, catalog) => {
-        return catalog
-            .splice(
-                catalog.findIndex((e) => e.catalog_name === ck.target.value),
-                1
-            )
-            .concat(catalog);
-    };
-    const sort_catalog = (e) => {
-        setCatalog(sorting(e, catalog));
-        setIsCatalog(true);
-    };
+    // const sorting = (ck, catalog) => {
+    //     return catalog 
+    //         .splice(
+    //             catalog.findIndex((e) => e.catalog_name === ck.target.value),
+    //             1
+    //         )
+    //         .concat(catalog);
+    // };
 
     props.data.map((e) => {
         filter.push(
             <FilterButton
-                onClick={sort_catalog}
+                onClick={() => {
+                    Inertia.get("filter.catalog", {
+                        catalog_id: e.id,
+                    });
+                }}
                 key={e.id}
                 value={e.catalog_name}
             >
@@ -53,7 +52,7 @@ export default function Home(props) {
         <>
             <Head title="Home" />
             <Header active={"home"} auth={props} />
-            <IntroScene />
+            <IntroScene attr={props.best_sale} />
             <div className="lg:p-10 p-6">
                 <div className="flex flex-row p-2 gap-5 lg:p-10 lg:gap-28 justify-center shadow-lg uppercase font-mono font-medium">
                     <span className="text-center">Secure payment</span>
@@ -63,7 +62,7 @@ export default function Home(props) {
                 </div>
             </div>
             <div className="grid lg:grid-cols-7 gap-10 ml-4 grid-rows-1">
-                <div className="lg:flex flex-col gap-4 lg:col-span-2 h-min justify-center">
+                <div className="flex flex-col gap-4 lg:col-span-2 h-min justify-center">
                     <div className="flex justify-center items-center">
                         <button
                             onClick={search}
@@ -78,17 +77,32 @@ export default function Home(props) {
                             handleChange={handlerSearch}
                         ></TextInput>
                     </div>
-                    <div className="gap-5 flex flex-wrap justify-center">
-                        <FilterButton onClick={() => setIsCatalog(false)}>
-                            Default
-                        </FilterButton>
+                    <div className="gap-5 flex flex-col justify-center p-2">
                         {filter}
+                    </div>
+                    <div className="shadow-lg flex-col p-2">
+                        <button
+                            onClick={() => {
+                                Inertia.get("about");
+                            }}
+                            className="text-[25px] p-2 bg-violet-800 text-white shadow-lg text-center px-5 w-full rounded-t-lg"
+                        >
+                            News
+                        </button>
+                        {props.news.map((e) => (
+                            <Post
+                                key={e.id}
+                                img={e.path_img}
+                                tit={e.title}
+                                cont={e.cont}
+                                date={e.date_post}
+                            />
+                        ))}
                     </div>
                 </div>
                 <div className="grid grid-cols-1 gap-1 md:gap-3 lg:gap-5 lg:col-span-5">
-                    {(isCatalog ? catalog : props.data).map((element) => (
+                    {props.data.map((element) => (
                         <Catalog
-                            slice={isCatalog ? false : true}
                             title={element.catalog_name}
                             key={element.id}
                             key_s={element.key_s}

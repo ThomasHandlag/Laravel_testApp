@@ -12,21 +12,47 @@ class DetailController extends Controller
      * @return Illuminate\Http\Response
      */
 
-     //render detail of book in guest mode
+    //render detail of book in guest mode
     public function create(Request $request)
     {
-        return Inertia::render('Detail', ['book' => (DB::select("SELECT * FROM books WHERE id = :id", ['id' => $request->get('id')]))]);
+        return Inertia::render(
+            'Detail',
+            [
+                'book' => DB::select("SELECT b.*, d.discount_offer FROM books b LEFT JOIN discount d ON d.book_id = b.id WHERE b.id = :id", ['id' => $request->get('id')]),
+                'com' => DB::select(
+                    "SELECT c.*, u.name, u.path_img FROM comments c INNER JOIN users u ON u.id = c.user_id WHERE book_id = :id",
+                    ['id' => $request->get('id')]
+                )
+            ]
+        );
     }
-      //render detail of book in authenticated mode
+    //render detail of book in authenticated mode
     public function show(Request $request)
-    {   $id = $request->get('id');
-        $query = "SELECT * FROM books, ";
-        return Inertia::render('Detail', ['book' => (DB::select("SELECT * FROM books WHERE id = :id", ['id' => $id]))]);
+    {
+        return Inertia::render(
+            'Detail',
+            [
+                'book' => (DB::select(
+                    "SELECT b.*, d.discount_offer FROM books b LEFT JOIN discount d ON d.book_id = b.id WHERE b.id = :id",
+                    ['id' => $request->get('id')]
+                )),
+                'com' => DB::select(
+                    "SELECT c.*, u.name, u.path_img FROM comments c INNER JOIN users u ON u.id = c.user_id WHERE book_id = :id",
+                    ['id' => $request->get('id')]
+                )
+            ]
+        );
     }
-    public function reply(){
 
-    }
-    public function comment(){
-
+    public function comment(Request $request)
+    {
+        DB::insert(
+            "INSERT INTO comments(book_id, user_id, content) VALUES(:b_id, :u_id, :cont)",
+            [
+                'b_id' => $request->get('b_id'),
+                'u_id' => $request->user()->id,
+                'cont' => $request->get('cont')
+            ]
+        );
     }
 }

@@ -73,7 +73,7 @@ return [
         public_path('storage') => storage_path('app/public'),
         public_path('images') => storage_path('app/images'),
         public_path('clients') => storage_path('app/clients'),
-
+        public_path('bill.txt') => storage_path('app/bill.txt'),
     ],
 
 ];

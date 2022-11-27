@@ -12,7 +12,8 @@ const Catalog = (data) => {
                 </span>
             </div>
             <div className="grid grid-cols-2 gap-1 md:grid-cols-2 md:gap-3 lg:grid-cols-5 lg:gap-5">
-                {(data.slice ? data.books.slice(0, 5) : data.books).map((element) => (
+                {data.books.map((element) => (
+                    // (data.slice ? data.books.slice(0, 5) : data.books).map((element) => (
                     <BookCategory
                         title={element.title}
                         price={element.price}
@@ -22,7 +23,9 @@ const Catalog = (data) => {
                         des={element.description}
                         author={element.author}
                         category={element.category}
+                        quantity={element.quantity}
                         authenticated={auth ? auth.user : null}
+                        discount_offer={element.discount_offer}
                     />
                 ))}
             </div>

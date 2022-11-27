@@ -17,4 +17,5 @@ return [
     'password' => 'The provided password is incorrect.',
     'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
     'unveritify' => 'Incorrect Veritify code.',
+    'liencekey' => 'Lience key is not correct or out of date',
 ];

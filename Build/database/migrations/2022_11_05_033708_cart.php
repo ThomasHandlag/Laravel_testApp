@@ -17,6 +17,9 @@ return new class extends Migration
             $table->id();
             $table->integer('user_id');
             $table->integer('book_id');
+            $table->date('date_order');
+            $table->integer('num');
+            $table->float('price');
             $table->timestamps();
         });
     }

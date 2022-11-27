@@ -11,14 +11,16 @@ import {
 } from "react-icons/bs/index";
 import { RiArrowDropDownLine } from "react-icons/ri/index";
 import guest from "../../images/guest.png";
-import { Link } from "@inertiajs/inertia-react";
+import { Link, usePage } from "@inertiajs/inertia-react";
 import Dropdown from "@/Components/Dropdown";
+import { AiOutlineShoppingCart } from "react-icons/ai/index";
 
 export default function Header({ active, auth }) {
     const [isActive, setActive] = useState(false);
     const toggleNav = () => {
         setActive(!isActive);
     };
+    const cart_num = usePage().props.cr_cart[0]['cart_num'];
     return (
         <header
             className={
@@ -37,7 +39,22 @@ export default function Header({ active, auth }) {
                             }}
                         />
                     </Link>
-                    <div className="flex justify-between gap-10">
+                    <div className="flex justify-between lg:gap-10 gap-5">
+                        {active == "shopping" ? (
+                            ""
+                        ) : (
+                            <div className="hover:bg-white rounded-xl text-cyan-500 hover:text-black flex">
+                                <Link
+                                    className="p-2 text-[30px]"
+                                    href="/shopping"
+                                >
+                                    <AiOutlineShoppingCart />
+                                </Link>
+                                <span className="w-[25px] h-[25px] border-rounded-[50%]">
+                                    {cart_num ? cart_num : 0}
+                                </span>
+                            </div>
+                        )}
                         <button
                             onClick={toggleNav}
                             className="hover:bg-white fs-30 rounded-md hover:text-gray-900 text-cyan-300 duration-200"
@@ -68,7 +85,7 @@ export default function Header({ active, auth }) {
                                 <a
                                     className="circle text-[35px] text-black hover:text-white duration-150"
                                     target="_blank"
-                                    href="https:/github.com"
+                                    href="https://github.com/ThomasHandlag/Laravel_testApp"
                                 >
                                     <BsGithub />
                                 </a>
@@ -121,10 +138,10 @@ export default function Header({ active, auth }) {
                             </li>
                             <li className="p-2 uppercase">
                                 <NavLink
-                                    href="/contact"
-                                    active={active == "contact" ? true : false}
+                                    href="/orders"
+                                    active={active == "history" ? true : false}
                                 >
-                                    contact
+                                    history
                                 </NavLink>
                             </li>
                         </ul>

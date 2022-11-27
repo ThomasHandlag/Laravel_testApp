@@ -23,6 +23,7 @@ return new class extends Migration
             $table->foreignId('catalog_id');
             $table->string('type_book')->nullable();
             $table->string('mass')->nullable();
+            $table->integer('quantity')->unsigned();
             $table->timestamps();
         });
     }

@@ -17,6 +17,10 @@ return new class extends Migration
             $table->id();
             $table->integer('user_id');
             $table->date('date_order')->time();
+            $table->integer('state_order');
+            $table->json('address');
+            $table->integer('payment_method');
+            $table->char('phone');
         });
     }
 

@@ -50,10 +50,10 @@ export default function Setting(props) {
         setIsPreview(false);
     };
 
-    const submit = (e) => {
-        e.prevenDefault();
-        post(route("update.user.infor"));
-    };
+    // const submit = (e) => {
+    //     e.prevenDefault();
+    //     post(route("update.user.infor"));
+    // };
     const onRemove = () => {
         Inertia.get("delete.user", { id: props.auth.user.id });
     };
@@ -128,7 +128,6 @@ export default function Setting(props) {
                         {isEnableSetting ? (
                             <EnabledFields
                                 list={props.auth.user}
-                                submit={submit}
                                 onClick={enableSetting}
                             />
                         ) : (
@@ -157,9 +156,15 @@ const EnabledFields = (list) => {
     const submit = (e) => {
         e.preventDefault();
         post(route("update.infor"));
+        list.onClick();
     };
     return (
-        <form onSubmit={(e) => submit} className="flex flex-col lg:gap-5">
+        <form
+            onSubmit={(e) => {
+                submit(e);
+            }}
+            className="flex flex-col lg:gap-5"
+        >
             <label className="text-slate-600">Name:</label>
             <input
                 className={"p-2 rounded-xl border-2"}
@@ -197,7 +202,6 @@ const EnabledFields = (list) => {
             <button
                 className="p-2 px-4 w-max bg-red-400 rounded-xl"
                 type={"submit"}
-                onClick={list.onClick}
             >
                 Save
             </button>
