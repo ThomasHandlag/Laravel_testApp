@@ -42,7 +42,7 @@ class AdminController extends Controller
     }
     public function showAdd()
     {
-        return Inertia::render('Admin/AdminPage', ['data' => [], 'cr_tool' => 5]);
+        return Inertia::render('Admin/AdminPage', ['cat' => DB::select("SELECT catalog_name, id FROM catalogs"), 'cr_tool' => 5]);
     }
     public function search(Request $request)
     {
@@ -58,11 +58,12 @@ class AdminController extends Controller
         $quantity =  $request->get('data')['quantity'];
         $mass = $request->get('data')['mass'];
         $type = $request->get('data')['type'];
+        $cat = $request->get('data')['cat_id'];
 
         $fexten = '.' . $request->file('path_img')->extension();
         $path_img  = $request->file('path_img')->storeAs('images', strtolower(trim($title)) . $fexten, 'local');
 
-        DB::insert("INSERT INTO books(title, author, price, mass, quantity, catalog_id, description, path_img, type_book) VALUES('$title', '$author', $price, '$mass', $quantity, 1, '$des', '$path_img', '$type')");
+        DB::insert("INSERT INTO books(title, author, price, mass, quantity, catalog_id, description, path_img, type_book) VALUES('$title', '$author', $price, '$mass', $quantity, $cat, '$des', '$path_img', '$type')");
         return Inertia::render('Admin/AdminPage');
     }
     public function delete(Request $request)
@@ -115,7 +116,7 @@ class AdminController extends Controller
     }
     public function delUser(Request $request)
     {
-         // $f = trim(strchr(DB::select("SELECT path_img FROM users WHERE id=:id", ['id' => $request->user()->id])[0]->path_img , "/"), "/");
+        // $f = trim(strchr(DB::select("SELECT path_img FROM users WHERE id=:id", ['id' => $request->user()->id])[0]->path_img , "/"), "/");
         // Storage::delete($f);
         DB::delete(
             "DELETE FROM users WHERE id=:id",
@@ -173,7 +174,7 @@ class AdminController extends Controller
     public function write(Request $request)
     {
         // dd($request);
-        $file_n = rand(100000, 999999).".".$request->file('file')->extension();
+        $file_n = rand(100000, 999999) . "." . $request->file('file')->extension();
         $path = $request->file('file')->storeAs('public', $file_n, 'local');
         DB::insert(
             "INSERT INTO posts(title, path_img, cont) VALUES(:tit, :img, :cont)",
@@ -186,13 +187,29 @@ class AdminController extends Controller
     }
     public function delPost(Request $request)
     {
-        $f = trim(strchr(DB::select("SELECT path_img FROM posts WHERE id=:id", ['id' => $request->get('id')])[0]->path_img , "/"), "/");
+        $f = trim(strchr(DB::select("SELECT path_img FROM posts WHERE id=:id", ['id' => $request->get('id')])[0]->path_img, "/"), "/");
         Storage::delete($f);
         DB::delete("DELETE FROM posts WHERE id=:id", ['id' => $request->get('id')]);
     }
 
-    public function searchUser(Request $request){
+    public function searchUser(Request $request)
+    {
         $s = $request->get('s_k');
         return Inertia::render('Admin/AdminPage', ['cr_tool' => 3, 'attr' =>  DB::select("SELECT * FROM users WHERE name LIKE '%$s%'"), 's' => $s]);
+    }
+
+    public function addCatalog(Request $request)
+    {
+        DB::insert("INSERT INTO catalogs(catalog_name, key_s) VALUES (:c_name, :k)", ['c_name' => $request->get('name'), 'k' => $request->get('k_s')]);
+    }
+    public function viewCatForm()
+    {
+        return Inertia::render(
+            'Admin/AdminPage',
+            [
+                'cat' => DB::select("SELECT catalog_name, id FROM  catalogs"),
+                'cr_tool' => 7,
+            ]
+        );
     }
 }

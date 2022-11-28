@@ -58,6 +58,9 @@ Route::get('admin.del.order', [AdminController::class, 'delOrder']);
 Route::get('admin.acc.order', [AdminController::class, 'accOrder']);
 
 Route::get('admin.report', [AdminController::class, 'report']);
+
+Route::get('admin.cat', [AdminController::class, 'viewCatForm']);
+Route::get('admin.add.catlog', [AdminController::class, 'addCatalog']);
 //
 
 Route::get('search.back', [BooksController::class, 'search']);

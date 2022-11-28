@@ -6,6 +6,7 @@ import { useForm } from "@inertiajs/inertia-react";
 import React, { useState } from "react";
 
 export default function AdminPage(props) {
+    console.log(props);
     const [prel, setPrel] = useState(props.cr_tool);
     const listPrel = [
         <Update data={props.data} sk={props.sk} />,
@@ -13,8 +14,9 @@ export default function AdminPage(props) {
         <ReportBen attr={props.attr} />,
         <MangeUser attr={props.attr} s={props.s} />,
         <ListOrder attr={props.attr} />,
-        <AddNew />,
+        <AddNew cat={props.cat} />,
         <Poster data={props.posts} />,
+        <Catalog data={props.cat} />,
     ];
     return (
         <>
@@ -108,6 +110,18 @@ export default function AdminPage(props) {
                     >
                         Write post
                     </Button>
+                    <Button
+                        className={
+                            props.cr_tool == 6
+                                ? " bg-purple-500 text-black"
+                                : ""
+                        }
+                        onClick={() => {
+                            Inertia.get("admin.cat");
+                        }}
+                    >
+                        Add catalog
+                    </Button>
                 </div>
                 <div className="col-span-7">{listPrel[prel]}</div>
             </div>
@@ -187,7 +201,7 @@ const Update = ({ data, sk }) => {
         </div>
     );
 };
-const AddNew = () => {
+const AddNew = ({ cat }) => {
     const [img, setImg] = useState();
 
     const [temp, setTemp] = useState();
@@ -200,6 +214,7 @@ const AddNew = () => {
         quantity: 0,
         mass: "",
         type: "",
+        cat_id: 1,
     });
     const dat = (e) => {
         setData(e.target.name, e.target.value);
@@ -264,6 +279,11 @@ const AddNew = () => {
                 defaultValue={data.price}
                 handleChange={dat}
             />
+            <select name="cat_id" onChange={dat}>
+                {cat.map((e) => (
+                    <option value={e.id}>{e.catalog_name}</option>
+                ))}
+            </select>
             <button
                 className={
                     "rounded-xl w-max bg-blue-500 p-2 px-4 hover:bg-blue-900 text-white"
@@ -429,9 +449,7 @@ const ListOrder = ({ attr }) => {
     return (
         <>
             <div className="flex justify-center gap-4 p-5 bg-blue-900 text-white">
-                <span>
-                    Current Orders: {attr.length}
-                </span>
+                <span>Current Orders: {attr.length}</span>
             </div>
             <table
                 className="table-auto w-full text-slate-700 text-center"
@@ -668,6 +686,47 @@ const Poster = ({ data }) => {
                         </Button>
                     </div>
                 ))}
+            </div>
+        </div>
+    );
+};
+
+const Catalog = ({ data }) => {
+    const [name, setName] = useState("");
+    const [sk, setSk] = useState("");
+    return (
+        <div className="flex flex-col justify-center gap-5 p-5">
+            <TextInput
+                type="text"
+                name="catlog"
+                handleChange={(e) => {
+                    setName(e.target.value);
+                }}
+                placeholder="Catalog name"
+            />
+            <TextInput
+                type="text"
+                name="sk"
+                handleChange={(e) => {
+                    setSk(e.target.value);
+                }}
+                placeholder="Search key"
+            />
+            <Button
+                className="hover:bg-green-500 w-max"
+                onClick={() => {
+                    Inertia.get("admin.add.catlog", { name: name, k_s: sk });
+                }}
+            >
+                Add new catalog
+            </Button>
+            <div className="flex flex-col gap-5 border-t-2">
+                <span className="text-slate-500">Current catalogs</span>
+                <select className="rounded-lg border-slate-500">
+                    {data.map((e) => (
+                        <option value={e.id}>{e.catalog_name}</option>
+                    ))}
+                </select>
             </div>
         </div>
     );
