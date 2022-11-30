@@ -8,7 +8,6 @@ import {
     BsGithub,
     BsInstagram,
     BsPinterest,
-    BsPencilSquare,
 } from "react-icons/bs/index";
 import { RiArrowDropDownLine } from "react-icons/ri/index";
 import guest from "../../images/guest.png";
@@ -170,9 +169,7 @@ export default function Header({ active, auth }) {
                                             : "bg-white " +
                                               "rounded-[50%] border-solid border-2 border-emerald-300 w-[50px] h-[50px] lg:w-[100px] lg:h-[100px] relative"
                                     }
-
                                 />
-                                {/* <button><BsPencilSquare className="absolute"/></button> */}
                             </div>
                             <div>
                                 <Dropdown>

@@ -60,9 +60,9 @@ const Footer = () => {
                         </Link>
                     </li>
                     <li>
-                        <Link href={"https://github.com"}>
+                        <a href="https://github.com/ThomasHandlag/Laravel_testApp">
                             <AiFillGithub className="text-[35px] text-blue-500 hover:text-white" />
-                        </Link>
+                        </a>
                     </li>
                     <li>
                         <Link href={"https://reddit.com"}>

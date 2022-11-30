@@ -28,7 +28,7 @@ export default function IntroScene({ attr }) {
                             onClick={() => {
                                 Inertia.get(url, { id: attr[0].id });
                             }}
-                            className="text-[20px] bg-indigo-400 text-white rounded-3xl px-5 py-2 hover:bg-gradient-to-r from-indigo-600 to-indigo-400 duration-700 focus:rounded-3xl absolute"
+                            className="motion-safe:animate-bounce text-[20px] bg-indigo-500 text-white rounded-3xl px-5 py-2 hover:bg-gradient-to-r from-indigo-600 to-indigo-400 duration-700 focus:rounded-3xl absolute"
                         >
                             Buy now
                         </button>

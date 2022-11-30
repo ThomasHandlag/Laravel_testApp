@@ -37,7 +37,14 @@ class AdminController extends Controller
     // *************
     public function update(Request $request)
     {
-        DB::update("UPDATE books SET quantity = :num WHERE id=:id", ['num' => $request->get('num'), 'id' => $request->get('id')]);
+        DB::update(
+            "UPDATE books SET quantity = :num, price=:price WHERE id=:id",
+            [
+                'num' => $request->get('num'),
+                'id' => $request->get('id'),
+                'price' => $request->get('price')
+            ]
+        );
         return redirect()->route('admin');
     }
     public function showAdd()
