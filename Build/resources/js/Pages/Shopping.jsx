@@ -63,8 +63,8 @@ export default function Shopping(props) {
                     </div>
                 </div>
             ) : (
-                <div className="grid grid-rows-1 gap-3">
-                    <div className="flex items-center justify-center pt-36">
+                <div className="grid grid-rows-1 gap-3 lg:h-[48vh]">
+                    <div className="flex items-center justify-center">
                         <div className="flex items-center shadow-gray-800 w-6/12 h-4/6 justify-between gap-2 text-slate-700 flex-col">
                             <h1 className="text-cyan-900 text-center p-2 text-lg">
                                 You are not sign in yet?

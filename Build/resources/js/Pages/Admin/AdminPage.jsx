@@ -4,6 +4,7 @@ import TextInput from "@/Components/TextInput";
 import { Inertia } from "@inertiajs/inertia";
 import { useForm } from "@inertiajs/inertia-react";
 import React, { useState } from "react";
+import { FaBook, FaJediOrder, FaMoneyBill } from "react-icons/fa/index";
 
 export default function AdminPage(props) {
     console.log(props);
@@ -20,17 +21,17 @@ export default function AdminPage(props) {
     ];
     return (
         <>
-            <div className="grid grid-cols-8 h-[100vh]">
+            <div className="grid grid-cols-8 h-[100vh] relative">
                 <div
                     className={
-                        "flex flex-col bg-blue-900 shadow-xl gap-5 col-span-1 sticky z-10 top-0"
+                        "flex flex-col bg-gradient-to-br from-emerald-300 to-sky-400 shadow-xl gap-5 col-span-1 sticky z-20 top-0 p-5"
                     }
                 >
                     <Button
                         className={
                             props.cr_tool == 0
-                                ? " bg-purple-500 text-black"
-                                : ""
+                                ? " bg-purple-600"
+                                : " hover:bg-purple-500"
                         }
                         onClick={() => {
                             Inertia.get("admin.reload");
@@ -41,8 +42,8 @@ export default function AdminPage(props) {
                     <Button
                         className={
                             props.cr_tool == 1
-                                ? " bg-purple-500 text-black"
-                                : ""
+                                ? " bg-purple-500"
+                                : " hover:bg-purple-500"
                         }
                         onClick={() => {
                             Inertia.get("admin.discount");
@@ -53,8 +54,8 @@ export default function AdminPage(props) {
                     <Button
                         className={
                             props.cr_tool == 2
-                                ? " bg-purple-500 text-black"
-                                : ""
+                                ? " bg-purple-500"
+                                : " hover:bg-purple-500"
                         }
                         onClick={() => {
                             Inertia.get("admin.report");
@@ -65,8 +66,8 @@ export default function AdminPage(props) {
                     <Button
                         className={
                             props.cr_tool == 3
-                                ? " bg-purple-500 text-black"
-                                : ""
+                                ? " bg-purple-500"
+                                : " hover:bg-purple-500"
                         }
                         onClick={() => {
                             Inertia.get("admin.users");
@@ -77,8 +78,8 @@ export default function AdminPage(props) {
                     <Button
                         className={
                             props.cr_tool == 4
-                                ? " bg-purple-500 text-black"
-                                : ""
+                                ? " bg-purple-500"
+                                : " hover:bg-purple-500"
                         }
                         onClick={() => {
                             Inertia.get("admin.orders");
@@ -89,8 +90,8 @@ export default function AdminPage(props) {
                     <Button
                         className={
                             props.cr_tool == 5
-                                ? " bg-purple-500 text-black"
-                                : ""
+                                ? " bg-purple-500"
+                                : " hover:bg-purple-500"
                         }
                         onClick={() => {
                             Inertia.get("admin.add");
@@ -101,8 +102,8 @@ export default function AdminPage(props) {
                     <Button
                         className={
                             props.cr_tool == 6
-                                ? " bg-purple-500 text-black"
-                                : ""
+                                ? " bg-purple-600"
+                                : " hover:bg-purple-500"
                         }
                         onClick={() => {
                             Inertia.get("write.post");
@@ -112,9 +113,9 @@ export default function AdminPage(props) {
                     </Button>
                     <Button
                         className={
-                            props.cr_tool == 6
-                                ? " bg-purple-500 text-black"
-                                : ""
+                            props.cr_tool == 7
+                                ? " bg-purple-500"
+                                : " hover:bg-purple-500"
                         }
                         onClick={() => {
                             Inertia.get("admin.cat");
@@ -298,9 +299,11 @@ const AddNew = ({ cat }) => {
 const ManageTool = ({ data }) => {
     const [isUpdate, setIsUpdate] = useState(false);
     const [num, setNum] = useState(0);
+    const [price, setP] = useState(0);
     const submit = () => {
         Inertia.get("admin.update.book", {
             num: num,
+            price: price,
         });
     };
     const del = () => {
@@ -311,13 +314,19 @@ const ManageTool = ({ data }) => {
     return (
         <tr>
             {isUpdate ? (
-                <td colSpan={4}>
+                <td colSpan={4} className="flex gap-2">
                     <TextInput
                         placeholder={"Quantity"}
                         name="quantity"
-                        defaultValue={num}
                         handleChange={(e) => {
                             setNum(e.target.value);
+                        }}
+                    />
+                    <TextInput
+                        placeholder={"Price"}
+                        name="price"
+                        handleChange={(e) => {
+                            setP(e.target.value);
                         }}
                     />
                     <Button className={"bg-red-500"} onClick={submit}>
@@ -332,7 +341,7 @@ const ManageTool = ({ data }) => {
                         <img
                             alt="Image"
                             src={data.path_img}
-                            className="w-[200px] h-[200px]"
+                            className="w-[220px] h-[160px]"
                         />
                     </td>
                     <td>{data.description}</td>
@@ -342,9 +351,9 @@ const ManageTool = ({ data }) => {
                     <td>{data.type_book}</td>
                 </>
             )}
-            <td>
+            <td className="flex flex-col gap-2">
                 <Button
-                    className={"bg-green-500"}
+                    className={"bg-green-500 w-max"}
                     onClick={(e) => {
                         setIsUpdate(!isUpdate);
                     }}
@@ -367,15 +376,21 @@ const ReportBen = ({ attr }) => {
         <div className="flex justify-center flex-col items-center bg-violet-900 h-[90vh]">
             <div className="flex flex-row gap-5 text-white text-[20px]">
                 Current total proceeds:
-                <span className="p-2 px-4 text-slate-300">${attr.tolNum}</span>
+                <span className="p-2 px-4 flex flex-row justify-center items-center gap-2">
+                    ${attr.tolNum} <FaMoneyBill />
+                </span>
             </div>
             <div className="flex flex-row gap-5 text-white text-[20px]">
                 Current total orders:
-                <span className="p-2 px-4">{attr.orderNum}</span>
+                <span className="p-2 px-4 flex flex-row justify-center items-center gap-2">
+                    {attr.orderNum} <FaJediOrder />
+                </span>
             </div>
             <div className="flex flex-row gap-5 text-white text-[20px]">
                 Current total books are sell:
-                <span className="p-2 px-4">{attr.bSell}</span>
+                <span className="p-2 px-4 flex flex-row justify-center items-center gap-2">
+                    {attr.bSell} <FaBook />
+                </span>
             </div>
         </div>
     );
@@ -448,7 +463,7 @@ const UserItem = ({ attr }) => {
 const ListOrder = ({ attr }) => {
     return (
         <>
-            <div className="flex justify-center gap-4 p-5 bg-blue-900 text-white">
+            <div className="flex justify-center gap-4 p-5 bg-gradient-to-r from-cyan-400 to-indigo-500 text-white">
                 <span>Current Orders: {attr.length}</span>
             </div>
             <table
@@ -527,7 +542,7 @@ const Discount = ({ dat }) => {
     return (
         <div className="grid grid-cols-8">
             <table
-                className="col-span-6 table-auto text-center"
+                className="col-span-6 table-auto text-center h-[100vh] overflow-auto"
                 cellPadding={4}
                 cellSpacing={4}
             >
@@ -551,36 +566,29 @@ const Discount = ({ dat }) => {
                     ))}
                 </tbody>
             </table>
-            <form className="col-span-2 bg-blue-900 p-5">
-                <InputLabel
-                    forInput={"date_apply"}
-                    className={"text-slate-200"}
-                >
-                    Date Apply:{" "}
-                </InputLabel>
+            <form className="col-span-2 bg-gradient-to-br from-teal-300 to-indigo-500 p-5 h-[100vh] flex flex-col gap-2">
+                <InputLabel forInput={"date_apply"}>Date Apply:</InputLabel>
                 <TextInput
                     type="date"
                     name="date_apply"
                     handleChange={handle}
                 />
-                <InputLabel
-                    forInput={"date_expire"}
-                    className={"text-slate-200"}
-                >
-                    Date Expire:{" "}
-                </InputLabel>
+                <InputLabel forInput={"date_expire"}>Date Expire:</InputLabel>
                 <TextInput
                     type="date"
                     name="date_expire"
                     handleChange={handle}
                 />
-                <InputLabel forInput={"offer"} className={"text-slate-200"}>
-                    Offer: (Ex: 10%)
-                </InputLabel>
-                <TextInput type="number" name="offer" handleChange={handle} />
+                <InputLabel forInput={"offer"}>Offer: (Eg: 10%)</InputLabel>
+                <TextInput
+                    type="number"
+                    name="offer"
+                    handleChange={handle}
+                    placeholder="Discount"
+                />
                 <select
                     name="cata"
-                    className="capitalize"
+                    className="capitalize rounded-md"
                     onChange={handle}
                     defaultValue={-1}
                 >
@@ -597,6 +605,7 @@ const Discount = ({ dat }) => {
                             data: data,
                         });
                     }}
+                    className="hover:bg-purple-400 shadow-lg w-max"
                 >
                     Add new offer
                 </Button>
@@ -631,6 +640,13 @@ const Poster = ({ data }) => {
     const [tit, setTit] = useState("");
     const [img, setImg] = useState();
     const [cont, setCont] = useState("");
+    const [edit, setEdit] = useState(false);
+    const [index, setIndex] = useState(0);
+
+    const [etit, editTit] = useState("");
+    const [eimg, editImg] = useState();
+    const [econt, editCont] = useState("");
+
     return (
         <div className="flex flex-col gap-5 p-5">
             <TextInput
@@ -670,7 +686,7 @@ const Poster = ({ data }) => {
             </Button>
             <div className="grid grid-cols-4">
                 {data.map((e) => (
-                    <div className="flex flex-col gap-2">
+                    <div className="flex flex-col gap-2" key={e.id}>
                         <Post
                             tit={e.title}
                             img={e.path_img}
@@ -684,9 +700,62 @@ const Poster = ({ data }) => {
                         >
                             Delete this post
                         </Button>
+                        <Button
+                            onClick={() => {
+                                setEdit(!edit);
+                            }}
+                        >
+                            Edit post
+                        </Button>
                     </div>
                 ))}
             </div>
+            {edit ? (
+                <div className="p-2 flex flex-col gap-4">
+                    <div className="w-full bg-purple-500 p-5">Edit post</div>
+                    <textarea
+                        type="text"
+                        placeholder={"Title"}
+                        onChange={(e) => {
+                            editTit(e.target.value);
+                        }}
+                        defaultValue={data[index].title}
+                        maxLength={200}
+                    />
+                    <TextInput
+                        type="file"
+                        placeholder={"Image"}
+                        handleChange={(e) => {
+                            editImg(e.target.files[0]);
+                        }}
+                    />
+                    <textarea
+                        placeholder="Content"
+                        onChange={(e) => {
+                            editCont(e.target.value);
+                        }}
+                        title="Post content"
+                        defaultValue={data[index].cont}
+                        maxLength={255}
+                    />
+                    <Button
+                        className={
+                            "hover:bg-gradient-to-r from-cyan-500 to-violet-600 w-max"
+                        }
+                        onClick={() => {
+                            Inertia.get("admin.update.post", {
+                                tit: etit,
+                                file: eimg,
+                                cont: econt,
+                            });
+                        }}
+                    >
+                        Save edit
+                    </Button>
+                </div>
+            ) : (
+                ""
+            )}
         </div>
     );
 };
