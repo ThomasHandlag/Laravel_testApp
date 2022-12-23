@@ -4,6 +4,7 @@ import Footer from "@/Components/Footer";
 import { FaShoppingCart } from "react-icons/fa/index";
 import { BiSend } from "react-icons/bi/index";
 import { Inertia } from "@inertiajs/inertia";
+import { Transition } from "@headlessui/react";
 
 export default function Detail(props) {
     const [quantity, setQuantity] = useState(1);
@@ -55,52 +56,57 @@ export default function Detail(props) {
                         </div>
                         <div className="flex flex-col lg:col-span-5 pl-5 h-fit">
                             <div className="p-2 border-b-2 border-gray-300">
-                                <span className="text-[35px] font-mono">
+                                <span className="text-[35px] tracking-tight">
                                     {props.book[0].title}
                                 </span>
                             </div>
                             <div className="flex flex-row border-b-2 border-gray-300 pt-5 gap-10">
-                                {props.book[0].discount_offer ? (
-                                    <div className="text-red-500 text-[30px] font-bold text-center">
-                                        $
-                                        {props.book[0].price -
-                                            props.book[0].price /
-                                                props.book[0].discount_offer}
-                                    </div>
-                                ) : (
-                                    <div className="text-red-500 text-[30px] font-bold text-center">
-                                        ${props.book[0].price}
-                                    </div>
-                                )}
-                                {props.book[0].discount_offer ? (
-                                    <div className="line-through text-gray-400 text-[30px]">
-                                        ${props.book[0].price}
-                                    </div>
-                                ) : (
-                                    ""
-                                )}
+                                <div className="text-red-500 text-[30px] font-bold text-center">
+                                    $
+                                    {props.book[0].discount_offer
+                                        ? props.book[0].price -
+                                          props.book[0].price /
+                                              props.book[0].discount_offer
+                                        : props.book[0].price}
+                                </div>
+                                <div className="line-through text-gray-400 text-[30px]">
+                                    $ {props.book[0].price}
+                                </div>
                             </div>
                             <div className="grid lg:grid-cols-2 lg:pt-10 pt-5">
-                                <ul className="flex flex-col gap-2 pl-10">
+                                <ul className="flex flex-col gap-2 px-5">
                                     <li className="text-[20px]">
-                                        <a href="">
-                                            Author: {props.book[0].author}
+                                        <a href="#" className="flex gap-2">
+                                            <span className="text-indigo-700">
+                                                Author:
+                                            </span>{" "}
+                                            {props.book[0].author}
                                         </a>
                                     </li>
-                                    <li className="text-[20px]">
-                                        Format: {props.book[0].type_book}
+                                    <li className="text-[20px] flex gap-2">
+                                        <span className="text-indigo-700">
+                                            Format:
+                                        </span>{" "}
+                                        {props.book[0].type_book}
                                     </li>
-                                    <li className="text-[20px]">
-                                        Mass: {props.book[0].mass}
+                                    <li className="text-[20px] flex gap-2">
+                                        <span className="text-indigo-700">
+                                            Mass:
+                                        </span>
+                                        {props.book[0].mass}
                                     </li>
                                 </ul>
                                 <div className="flex flex-col">
-                                    <div className="p-2 border-solid border-2 rounded-lg">
+                                    <Transition
+                                        className="p-2 border-solid border-2 rounded-lg"
+                                        show={true}
+                                        appear={true}
+                                    >
                                         {props.book[0].quantity > 0 ? (
                                             <div className="p-5 flex items-center justify-center flex-col gap-5">
-                                                <div className="flex flex-row rounded-xl shado w-xl border-2 border-gray-300">
+                                                <div className="flex flex-row rounded-xl shado w-xl border-2 border-indigo-500">
                                                     <button
-                                                        className="p-2 pl-5 pr-5 rounded-l-xl  hover:bg-blue-600"
+                                                        className="py-2 px-5 rounded-l-lg hover:bg-slate-300"
                                                         onClick={() =>
                                                             setQuantity(
                                                                 quantity + 1
@@ -110,7 +116,7 @@ export default function Detail(props) {
                                                         +
                                                     </button>
                                                     <span
-                                                        className="p-2 border-l-2 border-r-2 pl-4 pr-4"
+                                                        className="py-2 border-l-2 border-r-2 px-4"
                                                         onChange={() =>
                                                             setTol(
                                                                 quantity *
@@ -125,7 +131,7 @@ export default function Detail(props) {
                                                             : quantity}
                                                     </span>
                                                     <button
-                                                        className="p-2 pl-5 pr-5 rounded-r-xl hover:bg-red-600"
+                                                        className="p-2 px-5 rounded-r-lg hover:bg-slate-300"
                                                         onClick={() =>
                                                             setQuantity(
                                                                 quantity - 1
@@ -153,18 +159,18 @@ export default function Detail(props) {
                                                 Sale out
                                             </span>
                                         )}
-                                    </div>
-                                    <div className="flex flex-row gap-5 mt-5 justify-center items-center">
+                                    </Transition>
+                                    <div className="flex flex-row gap-5 mt-5 justify-center items-center text-white">
                                         {props.book[0].quantity > 0 ? (
                                             <>
                                                 <button
-                                                    className="fs-30 bg-green-500 p-2 rounded-2xl pl-10 pr-10"
+                                                    className="text-2xl bg-indigo-500 p-2 rounded-lg pl-10 pr-10 hover:bg-green-500 hover:text-black"
                                                     onClick={addCart}
                                                 >
                                                     <FaShoppingCart />
                                                 </button>
                                                 <button
-                                                    className="bg-red-500 p-2 pr-5 pl-5 rounded-2xl text-center font-bold"
+                                                    className="bg-indigo-500 p-2 pr-5 pl-5 rounded-lg text-center hover:bg-red-500 hover:text-black"
                                                     onClick={buyNow}
                                                 >
                                                     Buy now
@@ -172,14 +178,10 @@ export default function Detail(props) {
                                             </>
                                         ) : (
                                             <>
-                                                <button
-                                                    className="fs-30 bg-green-900 p-2 rounded-2xl pl-10 pr-10"
-                                                >
+                                                <button className="fs-30 bg-green-900 p-2 rounded-2xl pl-10 pr-10">
                                                     <FaShoppingCart />
                                                 </button>
-                                                <button
-                                                    className="bg-red-900 p-2 pr-5 pl-5 rounded-2xl text-center font-bold"
-                                                >
+                                                <button className="bg-red-900 p-2 pr-5 pl-5 rounded-2xl text-center font-bold">
                                                     Buy now
                                                 </button>
                                             </>
@@ -204,7 +206,10 @@ export default function Detail(props) {
                             <div className="bg-blue-500 text-[20px] w-full text-center p-2">
                                 Comment
                             </div>
-                            <div className="lg:h-[40vh] h-[30vh] relative overflow-auto p-2">
+                            <div
+                                className="lg:h-[40vh] h-[30vh] relative overflow-auto p-2"
+                                preservescroll="true"
+                            >
                                 <div className="flex flex-col gap-2">
                                     {props.com.map((e) => (
                                         <div
@@ -251,24 +256,30 @@ export default function Detail(props) {
                                         </div>
                                     ))}
                                 </div>
-                                <div className="shadow-xl w-max rounded-md flex flex-row sticky z-20 bottom-0">
-                                    <input
-                                        className="rounded-l-xl border-2 border-slate-300 focus:outline-none p-2 focus:border-cyan-300"
+                                <div className="shadow-xl rounded-md flex flex-row sticky z-20 bottom-0">
+                                    <textarea
+                                        className="rounded-l-md border-l-2 border-y-2 border-indigo-300 focus:outline-none p-2 focus:border-indigo-500"
                                         type="text"
                                         name="comment"
                                         onChange={(e) => {
                                             setCom(e.target.value);
                                         }}
+                                        defaultValue={com}
                                         placeholder="Comment"
                                     />
                                     <button
                                         onClick={() => {
-                                            Inertia.post("add.comm", {
-                                                cont: com,
-                                                b_id: props.book[0].id,
-                                            });
+                                            Inertia.post(
+                                                "add.comm",
+                                                {
+                                                    cont: com,
+                                                    b_id: props.book[0].id,
+                                                },
+                                                { preserveScroll: true }
+                                            );
+                                            setCom("");
                                         }}
-                                        className="bg-gray-400 p-2 rounded-r-xl border-2 text-[25px] text-center hover:bg-sky-400"
+                                        className="bg-indigo-500 p-2 rounded-r-md border-r-2 border-y-2 text-[25px] text-center hover:bg-indigo-800 text-white"
                                     >
                                         <BiSend />
                                     </button>

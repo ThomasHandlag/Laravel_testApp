@@ -15,7 +15,7 @@ export default function Shopping(props) {
         <>
             <Header active="shopping" auth={props} />
             {props.auth.user ? (
-                <div className="lg:p-4">
+                <div className="lg:p-4 h-[80vh]">
                     <div className="grid grid-rows-1 lg:grid-cols-8 lg:gap-10">
                         <div className="flex flex-col lg:col-span-2 row-span-1 p-5 justify-center items-center border-2 shadow-xl lg:gap-10 gap-4">
                             <div className="flex flex-col gap-5 justify-center items-center">
@@ -28,7 +28,7 @@ export default function Shopping(props) {
                                 </span>
                             </div>
                             <button
-                                className="text-cyan-500 bg-gray-800 hover:bg-green-500 hover:text-gray-100 p-2 text-[30px] rounded-xl px-5"
+                                className="text-white bg-indigo-500 hover:bg-indigo-600 p-2 text-[30px] rounded-xl px-5"
                                 onClick={() => {
                                     Inertia.get("buy.group", {
                                         list_id: list_id,
@@ -38,19 +38,34 @@ export default function Shopping(props) {
                                 <MdOutlinePayments />
                             </button>
                         </div>
-                        <div className="bg-gray-300 lg:col-span-6 row-span-1 overflow-auto h-[90%] flex flex-col gap-4 p-2 rounded-md shadow-md">
+                        <div className="lg:col-span-6 row-span-1 overflow-auto h-[70vh] flex flex-col gap-4 p-2 rounded-md shadow-lg">
                             {props.cart.length > 0 ? (
-                                props.cart.map((e) => (
-                                    <CartBook
-                                        cart_id={e.cart_id}
-                                        book_id={e.id}
-                                        key={e.id}
-                                        title={e.title}
-                                        path_img={e.path_img}
-                                        price={e.price}
-                                        num={e.num}
-                                    />
-                                ))
+                                <table
+                                    className="table-auto text-center"
+                                    cellPadding={5}
+                                    cellSpacing={5}
+                                >
+                                    <thead>
+                                        <th>Poster</th>
+                                        <th>Title</th>
+                                        <th>Quantity</th>
+                                        <th>Total price</th>
+                                        <th></th>
+                                    </thead>
+                                    <tbody>
+                                        {props.cart.map((e) => (
+                                            <CartBook
+                                                cart_id={e.cart_id}
+                                                book_id={e.id}
+                                                key={e.id}
+                                                title={e.title}
+                                                path_img={e.path_img}
+                                                price={e.price}
+                                                num={e.num}
+                                            />
+                                        ))}
+                                    </tbody>
+                                </table>
                             ) : (
                                 <p className="text-slate-600 p-2">
                                     You don't have any book yet
@@ -63,7 +78,7 @@ export default function Shopping(props) {
                     </div>
                 </div>
             ) : (
-                <div className="grid grid-rows-1 gap-3 lg:h-[48vh]">
+                <div className="grid grid-rows-1 gap-3 lg:h-[50vh]">
                     <div className="flex items-center justify-center">
                         <div className="flex items-center shadow-gray-800 w-6/12 h-4/6 justify-between gap-2 text-slate-700 flex-col">
                             <h1 className="text-cyan-900 text-center p-2 text-lg">

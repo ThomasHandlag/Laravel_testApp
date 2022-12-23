@@ -95,13 +95,13 @@ export default function Register() {
                 </div>
 
                 <div className="flex items-center justify-end mt-4">
-                    <Link href={route('login')} className="underline text-sm text-gray-300 hover:text-gray-100">
+                    <Link href={route('login')} className="hover:underline text-sm text-violet-500 hover:text-indigo-500">
                         Already registered?
                     </Link>
 
-                    <PrimaryButton className="ml-4" processing={processing}>
+                    <button className="ml-4 bg-indigo-500 text-white p-2 rounded-md" processing={processing}>
                         Register
-                    </PrimaryButton>
+                    </button>
                 </div>
             </form>
         </GuestLayout>

@@ -26,10 +26,10 @@ Route::get('about', [BooksController::class, 'showPost'])->name('about');
 
 
 Route::get('search', [BooksController::class, 'create']);
+Route::get('search.fil', [BooksController::class, 'search']);
 
-Route::get('filter.catalog', [BooksController::class, 'filterByCatalog']);
+Route::get('search.filter', [BooksController::class, 'filter']);
 
-Route::get('search.price', [BooksController::class, 'sortByPrice']);
 
 // admin route
 Route::get('/admin', [AdminController::class, 'index']);
@@ -56,11 +56,14 @@ Route::get('admin.user.del', [AdminController::class, 'delUser']);
 Route::get('admin.orders', [AdminController::class, 'showOrders']);
 Route::get('admin.del.order', [AdminController::class, 'delOrder']);
 Route::get('admin.acc.order', [AdminController::class, 'accOrder']);
+Route::get('admin.detail.order', [AdminController::class, 'showOrderDetail']);
 
 Route::get('admin.report', [AdminController::class, 'report']);
 
 Route::get('admin.cat', [AdminController::class, 'viewCatForm']);
 Route::get('admin.add.catlog', [AdminController::class, 'addCatalog']);
+
+Route::get('load.more', [AdminController::class, 'loadMore']);
 //
 
 Route::get('search.back', [BooksController::class, 'search']);

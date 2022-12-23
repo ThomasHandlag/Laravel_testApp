@@ -7,7 +7,7 @@ import { createInertiaApp } from '@inertiajs/inertia-react';
 import { InertiaProgress } from '@inertiajs/progress';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 
-const appName = window.document.getElementsByTagName('title')[0]?.innerText || 'Laravel';
+const appName = window.document.getElementsByTagName('title')[0]?.innerText || 'TSpace';
 
 createInertiaApp({
     title: (title) => `${title} - ${appName}`,
@@ -19,4 +19,4 @@ createInertiaApp({
     },
 });
 
-InertiaProgress.init({ color: '#ff3300' });
+InertiaProgress.init({ color: '#252529' });

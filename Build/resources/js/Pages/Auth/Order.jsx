@@ -104,6 +104,7 @@ const OrderRow = (infor) => {
         </tr>
     );
 };
+
 const OrderDetail = ({ data }) => {
     function merge() {
         let tol = {
@@ -162,3 +163,5 @@ const OrderDetail = ({ data }) => {
         </table>
     );
 };
+
+export {OrderDetail};

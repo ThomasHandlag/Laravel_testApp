@@ -48,7 +48,8 @@ class VerificationMail extends Mailable
         return new Content(
             markdown: 'mail.verification-mail',
             with: [
-                'veritify_code' => $this->code
+                'veritify_code' => $this->code,
+                'url' => "https://github.com/ThomasHandlag/Laravel_testApp",
             ],
         );
     }

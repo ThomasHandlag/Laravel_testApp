@@ -16,7 +16,7 @@ use App\Http\Controllers\DetailController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\ShopController;
 use App\Http\Controllers\PasswordController;
-
+use Inertia\Inertia;
 
 Route::middleware('guest')->group(function () {
     Route::get('register', [RegisteredUserController::class, 'create'])
@@ -61,7 +61,7 @@ Route::middleware('auth')->group(function () {
 
     Route::post('confirm-password', [ConfirmablePasswordController::class, 'store']);
 
-    Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
+    Route::get('logout', [AuthenticatedSessionController::class, 'destroy'])
         ->name('logout');
 
     Route::get('settings.auth', [SettingController::class, 'create'])->name('show.settings');
@@ -72,9 +72,11 @@ Route::middleware('auth')->group(function () {
 
     Route::get('delete.user', [SettingController::class, 'delete'])->name('delete.user');
 
-    Route::get('update.password', [PasswordController::class, 'create']);
+    Route::get('update.password', [PasswordController::class, 'create'])->name('update.password');
 
-    Route::post('save.password', [PasswordController::class, 'store'])->name('save.password');
+    Route::get('require.check', [PasswordController::class, 'show'])->name('require.check');
+
+    Route::get('save.password', [PasswordController::class, 'store'])->name('save.password');
 
     //Shop basic routes
     Route::get('detail.book.auth', [DetailController::class, 'show'])->name('detail.book.auth');
@@ -98,6 +100,14 @@ Route::middleware('auth')->group(function () {
     Route::get('buy.book', [BuyController::class, 'index'])->name('buy.book.auth');
 
     Route::post('book.success', [BuyController::class, 'accept']);
+
+    Route::get('momo.qr', function () {
+        Inertia::render('Welcome', ['qr' => 1]);
+    });
+
+    Route::get('bank.qr', function () {
+        Inertia::render('Welcome', ['qr' => 2]);
+    });
 
     Route::get('bill.download', [BuyController::class, 'downloadable'])->name('bill.download');
 

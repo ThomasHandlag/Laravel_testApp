@@ -1,22 +1,11 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-@layer base {
+@layer components {
     .overlay {
-        width: 100%;
-        position: fixed;
-        background: rgb(52, 200, 255);
-        background: linear-gradient(
-            90deg,
-            rgba(52, 200, 255, 1) 0%,
-            rgba(208, 35, 251, 1) 100%
-        );
-        height: 0%;
-        transition: all ease-in-out 0.5s;
         animation: load;
-        visibility: hidden;
-        overflow: hidden;
-        top: 0px;
+        animation-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        animation-duration: 0.5ms;
     }
     .is-showed {
         height: 100%;
@@ -28,44 +17,42 @@
     }
     @keyframes load {
         0% {
-            height: 0%;
-        }
-        25% {
-            height: 25%;
-        }
-        50% {
-            height: 50%;
-        }
-        75% {
-            height: 75%;
+            height: 0vh;
         }
         100% {
-            height: 100%;
+            height: 100vh;
         }
     }
-    .btn {
-        color: rgb(0, 0, 0);
+    .ping {
+        animation: ping;
+        animation-iteration-count: infinite;
+        animation-timing-function: cubic-bezier(0.075, 0.82, 0.165, 1);
+        animation-duration: 500ms;
     }
-    .btn-ln {
-        background: radial-gradient(
-            circle,
-            rgba(52, 200, 255, 1) 0%,
-            rgba(208, 35, 251, 1) 100%
-        );
+    @keyframes ping {
+        0% {
+            transform: scale(0.5, 0.5);
+            background-color: rgb(143, 0, 0);
+        }
+        100% {
+            background-color: rgb(255, 0, 0);
+            transform: scale(1, 1);
+        }
     }
-    .circle {
-        border-radius: 50%;
+    .bubble {
+        animation: bubble;
+        animation-duration: 1000ms;
+        animation-timing-function: cubic-bezier(0.165, 0.84, 0.44, 1);
+        animation-iteration-count: infinite;
     }
-    .fs-30 {
-        font-size: 30px;
-    }
-    .fs-20 {
-        font-size: 20px;
-    }
-    .btn-white {
-        background: rgb(255, 255, 255);
-    }
-    .tx-cl-white {
-        color: black;
+    @keyframes bubble {
+        0% {
+            transform: translateY(-5);
+            opacity: 0.4;
+        }
+        100% {
+            transform: translateY(5);
+            opacity: 1;
+        }
     }
 }

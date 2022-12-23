@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\VerificationMail;
 
 class AdminController extends Controller
 {
@@ -20,12 +22,17 @@ class AdminController extends Controller
     {
         // dd($request->get('liencekey'));\
         if (Hash::check($request->get('liencekey'), Storage::get('liencekey.key'))) {
-            $data = DB::select("SELECT * FROM books");
-            return Inertia::render('Admin/AdminPage', ['data' => $data, 'cr_tool' => 0]);
+            $data = DB::select("SELECT * FROM books LIMIT 0, 10");
+            return Inertia::render('Admin/AdminPage', ['data' => $data, 'cr_tool' => 0, 'loadNum' => 10]);
         }
         throw ValidationException::withMessages([
             'liencekey_error' => trans('auth.liencekey'),
         ]);
+    }
+    public function loadMore(Request $request)
+    {
+        $data = DB::select("SELECT * FROM books LIMIT 0, :loadN", ['loadN' => $request->get('to')]);
+        return Inertia::render('Admin/AdminPage', ['data' => $data, 'cr_tool' => 0, 'loadNum' => $request->get('to')]);
     }
     public function reCreate()
     {
@@ -138,7 +145,27 @@ class AdminController extends Controller
         $sql = "SELECT o.*, u.name, u.email, u.phone FROM orders o, users u WHERE o.user_id = u.id";
         return Inertia::render(
             'Admin/AdminPage',
-            ['attr' => DB::select($sql), 'cr_tool' => 4]
+            [
+                'attr' => DB::select($sql), 'cr_tool' => 4
+            ]
+        );
+    }
+
+    public function showOrderDetail(Request $request)
+    {
+        $sql = "SELECT o.*, u.name, u.email, u.phone FROM orders o, users u WHERE o.user_id = u.id";
+        return Inertia::render(
+            'Admin/AdminPage',
+            [
+                'detail_data' => DB::select(
+                    "SELECT b.title AS title, o.* FROM books b INNER JOIN order_detail o ON b.id = o.book_id WHERE o.order_id=:id",
+                    ['id' => $request->get('id')]
+                ),
+                'attr' => DB::select($sql),
+                'detail' => true,
+                'cr_tool' => 4,
+                'email' => $request->get('email')
+            ]
         );
     }
     public function delOrders(Request $request)
@@ -151,6 +178,8 @@ class AdminController extends Controller
 
     public function accOrder(Request $request)
     {
+        Mail::to($request->user()->email)
+            ->send(new VerificationMail("Your order was success, Open history section to view"));
         DB::update(
             "UPDATE orders SET state_order = 1 WHERE id=:id",
             ['id' => $request->get('id')]

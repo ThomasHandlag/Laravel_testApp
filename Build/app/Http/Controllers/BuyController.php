@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Mail\VerificationMail;
+use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 use Illuminate\Validation\ValidationException;
@@ -37,10 +39,12 @@ class BuyController extends Controller
     }
 
     //send vertify code
-    public function create()
+    public function create(Request $request)
     {
         $code = rand(1000, 9999);
         Storage::put('key.txt', $code);
+        Mail::to($request->user()->email)
+            ->send(new VerificationMail($code));
         return new VerificationMail($code);
     }
 
@@ -76,6 +80,12 @@ class BuyController extends Controller
         $add_d->district = $request->get('data')['district'];
         $add_d->street = $request->get('data')['street'];
 
+        $rout = "";
+
+        if ($request->get('p_m') == 1) $rout = "orders";
+        else if ($request->get('p_m') == 2) $rout = "momo.qr";
+        else $rout = "bank.qr";
+
         $add = json_encode($add_d);
         DB::insert(
             "INSERT INTO orders(id, user_id, state_order, address, payment_method, phone) VALUES(:id, :user_id, 0, '$add', :p_m, :p)",
@@ -100,7 +110,7 @@ class BuyController extends Controller
             );
             DB::delete("DELETE FROM cart WHERE id = :cart_id", ['cart_id' => $el['cart_id']]);
         }
-        return redirect()->route('orders');
+        return redirect()->route($rout);
     }
     //return the bill page
     public function downloadable(Request $request)

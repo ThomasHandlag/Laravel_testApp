@@ -3,11 +3,12 @@ import { Inertia } from "@inertiajs/inertia";
 import { useForm, usePage } from "@inertiajs/inertia-react";
 
 export default function BookCategory(book) {
+    let dark = book.dark;
     const url = usePage().props.auth.user
         ? "detail.book.auth"
         : "detail.book.guest";
     const loadDetail = () => {
-        Inertia.get(url, { id: book.id });
+        Inertia.get(url, { id: book.id }, {preserveScroll: true});
     };
     return (
         <>
@@ -20,7 +21,7 @@ export default function BookCategory(book) {
                     />
                     <div className="absolute bg-opacity-20 gap-2 top-0 flex justify-between">
                         {book.discount_offer ? (
-                            <div className="rounded-[50%] bg-red-700 p-2 top-0 text-center">
+                            <div className="rounded-[50%] bg-red-700 p-2 top-0 text-center transition-all ease-in-out ping duration-100">
                                 <p className="text-white">
                                     {book.discount_offer}
                                     <small>%</small>

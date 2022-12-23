@@ -4,17 +4,23 @@ import TextInput from "@/Components/TextInput";
 import { Inertia } from "@inertiajs/inertia";
 import { useForm } from "@inertiajs/inertia-react";
 import React, { useState } from "react";
-import { FaBook, FaJediOrder, FaMoneyBill } from "react-icons/fa/index";
+import { FaBook, FaEye, FaJediOrder, FaMoneyBill } from "react-icons/fa/index";
+import { FaArrowCircleDown } from "react-icons/fa/index";
+import { toInteger } from "lodash";
 
 export default function AdminPage(props) {
-    console.log(props);
     const [prel, setPrel] = useState(props.cr_tool);
     const listPrel = [
-        <Update data={props.data} sk={props.sk} />,
+        <Update data={props.data} sk={props.sk} loadNum={props.loadNum} />,
         <Discount dat={props} />,
         <ReportBen attr={props.attr} />,
         <MangeUser attr={props.attr} s={props.s} />,
-        <ListOrder attr={props.attr} />,
+        <ListOrder
+            attr={props.attr}
+            detail={props.detail}
+            detail_data={props.detail_data}
+            email={props.email}
+        />,
         <AddNew cat={props.cat} />,
         <Poster data={props.posts} />,
         <Catalog data={props.cat} />,
@@ -151,44 +157,45 @@ const Button = ({
     );
 };
 
-const Update = ({ data, sk }) => {
+const Update = ({ data, sk, loadNum }) => {
     // const [sk, setSk] = useState("");
     return (
-        <div className="bg-white/60 backdrop-blur-2xl w-full flex gap-5 overflow-auto h-[100vh]">
-            <table
-                className="table-auto text-center"
-                cellPadding={5}
-                cellSpacing={5}
-            >
-                <thead>
-                    <th>Title</th>
-                    <th>Quantity</th>
-                    <th>Poster</th>
-                    <th>Description</th>
-                    <th>Price</th>
-                    <th>Author</th>
-                    <th>Mass</th>
-                    <th>Type</th>
-                </thead>
-                <tbody>
-                    {data.map((e) => (
-                        <ManageTool data={e} key={e.id} />
-                    ))}
-                </tbody>
-            </table>
-            <div className="">
-                <TextInput
-                    type="text"
-                    handleChange={(e) => {
-                        Inertia.get("s.book", {
-                            s_key: e.target.value,
-                        });
-                    }}
-                    isFocused
-                    placeholder="Seach..."
-                    defaultValue={sk ? sk : ""}
-                />
-                {/* <Button
+        <>
+            <div className="bg-white/60 backdrop-blur-2xl w-full flex gap-5 overflow-auto h-[100vh]">
+                <table
+                    className="table-auto text-center"
+                    cellPadding={5}
+                    cellSpacing={5}
+                >
+                    <thead>
+                        <th>Title</th>
+                        <th>Quantity</th>
+                        <th>Poster</th>
+                        <th>Description</th>
+                        <th>Price</th>
+                        <th>Author</th>
+                        <th>Mass</th>
+                        <th>Type</th>
+                    </thead>
+                    <tbody>
+                        {data.map((e) => (
+                            <ManageTool data={e} key={e.id} />
+                        ))}
+                    </tbody>
+                </table>
+                <div className="">
+                    <TextInput
+                        type="text"
+                        handleChange={(e) => {
+                            Inertia.get("s.book", {
+                                s_key: e.target.value,
+                            });
+                        }}
+                        isFocused
+                        placeholder="Seach..."
+                        defaultValue={sk ? sk : ""}
+                    />
+                    {/* <Button
                     className={"p-2"}
                     onClick={(e) => {
                         Inertia.get("s.book", {
@@ -198,8 +205,21 @@ const Update = ({ data, sk }) => {
                 >
                     Search
                 </Button> */}
+                </div>
             </div>
-        </div>
+            <div className="flex justify-center items-center bg-gradient-to-t from-gray-600/90 via-gray-600/50 to-white/10">
+                <Button
+                    className={"rounded-full bubble"}
+                    onClick={() => {
+                        Inertia.get("load.more", {
+                            to: toInteger(toInteger(loadNum) + 10),
+                        });
+                    }}
+                >
+                    <FaArrowCircleDown />
+                </Button>
+            </div>
+        </>
     );
 };
 const AddNew = ({ cat }) => {
@@ -460,7 +480,7 @@ const UserItem = ({ attr }) => {
         </tr>
     );
 };
-const ListOrder = ({ attr }) => {
+const ListOrder = ({ attr, detail, detail_data, email }) => {
     return (
         <>
             <div className="flex justify-center gap-4 p-5 bg-gradient-to-r from-cyan-400 to-indigo-500 text-white">
@@ -483,10 +503,11 @@ const ListOrder = ({ attr }) => {
                 </thead>
                 <tbody>
                     {attr.map((e) => (
-                        <OrderItem attr={e} />
+                        <OrderItem attr={e} key={e.id} />
                     ))}
                 </tbody>
             </table>
+            {detail ? <OrderDetail data={detail_data} email={email} /> : ""}
         </>
     );
 };
@@ -515,10 +536,26 @@ const OrderItem = ({ attr }) => {
                         ""
                     )}
                     <Button
+                        className={"p-2 px-4 text-2xl"}
                         onClick={() => {
-                            Inertia.get("admin.del.order", {
-                                id: attr.id,
-                            });
+                            Inertia.get(
+                                "admin.detail.order",
+                                { id: attr.id, email: attr.email },
+                                { preserveScroll: true }
+                            );
+                        }}
+                    >
+                        <FaEye />
+                    </Button>
+                    <Button
+                        onClick={() => {
+                            Inertia.get(
+                                "admin.del.order",
+                                {
+                                    id: attr.id,
+                                },
+                                { preserveScroll: true }
+                            );
                         }}
                         className="hover:bg-red-500"
                     >
@@ -527,6 +564,64 @@ const OrderItem = ({ attr }) => {
                 </div>
             </td>
         </tr>
+    );
+};
+const OrderDetail = ({ data, email }) => {
+    function merge() {
+        let tol = {
+            p: 0,
+            pro: 0,
+        };
+        data.map((e) => {
+            tol.p += e.total_p;
+            tol.pro += e.quan;
+        });
+        return tol;
+    }
+    return (
+        <table
+            className="table-auto border-collapse border-spacing-2 border-t-2 border-solid w-full text-center text-slate-700"
+            cellSpacing={5}
+            cellPadding={5}
+        >
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Quantity</th>
+                    <th>Total price</th>
+                    <th>Price per</th>
+                </tr>
+            </thead>
+            <tbody>
+                {data.map((e) => (
+                    <tr key={e.id}>
+                        <td>
+                            <button
+                                className="text-blue-500"
+                                onClick={() => {
+                                    Inertia.get("detail.book.auth", {
+                                        id: e.book_id,
+                                    });
+                                }}
+                            >
+                                {e.title}
+                            </button>
+                        </td>
+                        <td>{e.quan}</td>
+                        <td>{e.total_p}</td>
+                        <td>{e.total_p / e.quan}</td>
+                    </tr>
+                ))}
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td>{email}</td>
+                    <td></td>
+                    <td>Total products: {merge().pro}</td>
+                    <td>Total price: ${merge().p}</td>
+                </tr>
+            </tfoot>
+        </table>
     );
 };
 const Discount = ({ dat }) => {
