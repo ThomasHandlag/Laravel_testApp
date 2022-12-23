@@ -5,6 +5,7 @@ import InputError from "@/Components/InputError";
 import PrimaryButton from "@/Components/PrimaryButton";
 import TextInput from "@/Components/TextInput";
 import { Head, Link, useForm } from "@inertiajs/inertia-react";
+import { AiOutlineKey, AiOutlineMail } from "react-icons/ai";
 
 export default function Login({ status, canResetPassword }) {
     const { data, setData, post, processing, errors, reset } = useForm({
@@ -45,12 +46,13 @@ export default function Login({ status, canResetPassword }) {
             )}
 
             <form onSubmit={submit} className="flex flex-col gap-5">
-                <div>
+                <div className="flex flex-row gap-5 items-center">
+                    <AiOutlineMail className="text-3xl text-indigo-500" />
                     <TextInput
                         type="text"
                         name="email"
                         value={data.email}
-                        className="mt-1 block w-full p-2 bg-gray-600 border-0 text-white placeholder-slate-400"
+                        className="mt-1 block w-full p-2 placeholder-slate-400 shadow-lg"
                         autoComplete="username"
                         placeholder={"Email"}
                         isFocused={true}
@@ -60,12 +62,13 @@ export default function Login({ status, canResetPassword }) {
                     <InputError message={errors.email} className="mt-2" />
                 </div>
 
-                <div className="mt-4">
+                <div className="mt-4 flex flex-row gap-5 items-center">
+                    <AiOutlineKey className="text-3xl text-indigo-500" />
                     <TextInput
                         type="password"
                         name="password"
                         value={data.password}
-                        className="mt-1 block w-full p-2 bg-gray-600 border-0 text-white placeholder-slate-400"
+                        className="mt-1 block w-full p-2 placeholder-slate-400"
                         autoComplete="current-password"
                         placeholder={"Password"}
                         handleChange={onHandleChange}
@@ -75,35 +78,38 @@ export default function Login({ status, canResetPassword }) {
                 </div>
 
                 <div className="block mt-4">
-                    <label className="flex items-center">
+                    <label className="flex items-center gap-5 flex-row">
                         <Checkbox
                             name="remember"
                             value={data.remember}
                             handleChange={onHandleChange}
                         />
 
-                        <span className="ml-2 text-sm text-gray-200">
+                        <span className="ml-2 text-sm text-indigo-500">
                             Remember me
                         </span>
                     </label>
                 </div>
 
                 <div className="flex items-center justify-end mt-4 flex-col gap-4">
-                        <PrimaryButton className="ml-4 hover:bg-slate-400 hover:text-gray-800" processing={processing}>
-                            Sign in
-                        </PrimaryButton>
+                    <PrimaryButton
+                        className="ml-4 bg-indigo-500 hover:bg-indigo-800 hover:border-indigo-500"
+                        processing={processing}
+                    >
+                        Sign in
+                    </PrimaryButton>
                     {canResetPassword && (
                         <Link
                             href={route("password.request")}
-                            className="underline text-sm text-gray-300 hover:text-gray-100"
+                            className="hover:underline text-sm text-indigo-500"
                         >
                             Forgot your password?
                         </Link>
                     )}
-                    <span className="text-gray-200 text-sm">or</span>
+                    <span className="text-indigo-800 text-sm">or</span>
                     <Link
                         href={route("register")}
-                        className="underline text-gray-300"
+                        className="hover:underline text-indigo-500"
                     >
                         Sign up
                     </Link>

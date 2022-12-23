@@ -37,7 +37,7 @@ class DetailController extends Controller
                     ['id' => $request->get('id')]
                 )),
                 'com' => DB::select(
-                    "SELECT c.*, u.name, u.path_img FROM comments c INNER JOIN users u ON u.id = c.user_id WHERE book_id = :id",
+                    "SELECT c.*, u.name, u.path_img FROM comments c INNER JOIN users u ON u.id = c.user_id WHERE book_id = :id ORDER BY date_comt",
                     ['id' => $request->get('id')]
                 )
             ]
@@ -50,7 +50,7 @@ class DetailController extends Controller
             "INSERT INTO comments(book_id, user_id, content) VALUES(:b_id, :u_id, :cont)",
             [
                 'b_id' => $request->get('b_id'),
-                'u_id' => $request->user()->id,
+                'u_id' => $request->user()->id, 
                 'cont' => $request->get('cont')
             ]
         );

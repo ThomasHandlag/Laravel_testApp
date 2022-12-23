@@ -6,6 +6,7 @@ import { BiEdit } from "react-icons/bi/index";
 import { useForm } from "@inertiajs/inertia-react";
 import { BsGenderMale, BsGenderFemale } from "react-icons/bs/index";
 import { Inertia } from "@inertiajs/inertia";
+import { Transition } from "@headlessui/react";
 
 export default function Setting(props) {
     //toggle edit basis infor
@@ -60,8 +61,14 @@ export default function Setting(props) {
     return (
         <>
             <Header auth={props} />
-            <div className="w-full grid lg:grid-cols-5 grid-cols-1 p-10 gap-5">
-                <div className="lg:p-5 flex flex-col gap-5 rounded-xl shadow-2xl border-x-2 border-b-2 col-span-2">
+            <div className="w-full grid lg:grid-cols-5 grid-cols-1 lg:p-10 p-5 gap-5">
+                <div className="lg:p-5 flex flex-col items-center gap-5 rounded-xl shadow-2xl border-x-2 border-b-2 col-span-2">
+                    <button
+                        className="bg-transparent text-[30px] text-gray-800 w-max"
+                        onClick={setEditFile}
+                    >
+                        <BiEdit />
+                    </button>
                     <img
                         className="rounded-full lg:w-[300px] lg:h-[300px] h-[100px] w-[100px] border-2 relative"
                         src={
@@ -70,12 +77,6 @@ export default function Setting(props) {
                                 : props.auth.user.path_img
                         }
                     />
-                    <button
-                        className="bg-transparent text-[30px] text-gray-500 lg:absolute w-max"
-                        onClick={setEditFile}
-                    >
-                        <BiEdit />
-                    </button>
                     <button
                         onClick={() =>
                             Inertia.get("update.password", {
@@ -88,34 +89,62 @@ export default function Setting(props) {
                     >
                         Reset password
                     </button>
-                    <div
+                    <Transition
                         className={
-                            isUploadImage
-                                ? "flex flex-col justify-center gap-5 items-center"
-                                : "hidden"
+                            "flex flex-col justify-center gap-5 items-center"
                         }
+                        show={isUploadImage}
+                        appear={true}
+                        as="div"
                     >
-                        <input
-                            type={"file"}
-                            className="rounded-xl border border-solid border-gray-300 focus:outline-none px-2 text-base py-2 text-gray-700"
-                            name="file"
-                            accept="image/png, image/jpeg, image/jpg, image/gif"
-                            onChange={handlerChange}
-                            id={"file"}
-                        />
-                        <button
-                            className="bg-gradient-to-tr from-cyan-400 to-green-500 hover:bg-gradient-to-tr hover:from-green-500 hover:to-cyan-400 p-2 lg:px-5 rounded-xl w-max"
-                            onClick={previewImg}
+                        <Transition.Child
+                            enter="transition ease-in-out duration-100 transform"
+                            enterFrom="opacity-0 translate-y-full"
+                            enterTo="opacity-100 translate-x-0"
+                            leave="transition ease-in-out duration-500"
+                            leaveFrom="opacity-100 translate-x-0"
+                            leaveTo="opacity-0 translate-y-full"
                         >
-                            Preview
-                        </button>
-                        <button
-                            className="p-2 px-4 w-max bg-red-400 rounded-xl hover:bg-red-700 hover:text-white focus:outline-none focus:border-cyan-300"
-                            onClick={saveImg}
+                            <input
+                                type={"file"}
+                                className="rounded-lg border border-solid border-indigo-400 focus:outline-none px-2 text-base py-2 text-gray-800 w-max"
+                                name="file"
+                                accept="image/png, image/jpeg, image/jpg, image/gif"
+                                onChange={handlerChange}
+                                id={"file"}
+                            />
+                        </Transition.Child>
+                        <Transition.Child
+                            enter="transition ease-in-out duration-300 transform"
+                            enterFrom="opacity-0 translate-y-full"
+                            enterTo="opacity-100 translate-x-0"
+                            leave="transition ease-in-out duration-300"
+                            leaveFrom="opacity-100 translate-x-0"
+                            leaveTo="opacity-0 translate-y-full"
                         >
-                            Save
-                        </button>
-                    </div>
+                            <button
+                                className="bg-gradient-to-tr from-cyan-400 to-green-500 hover:bg-gradient-to-tr hover:from-green-500 hover:to-cyan-400 p-2 lg:px-5 rounded-xl w-max"
+                                onClick={previewImg}
+                            >
+                                Preview
+                            </button>
+                        </Transition.Child>
+                        <Transition.Child
+                            enter="transition ease-in-out duration-700 transform"
+                            enterFrom="opacity-0 translate-y-full"
+                            enterTo="opacity-100 translate-x-0"
+                            leave="transition ease-in-out duration-100"
+                            leaveFrom="opacity-100 translate-x-0"
+                            leaveTo="opacity-0 translate-y-full"
+                        >
+                            <button
+                                className="p-2 px-4 w-max bg-red-400 rounded-xl hover:bg-red-700 hover:text-white focus:outline-none focus:border-cyan-300"
+                                onClick={saveImg}
+                            >
+                                Save
+                            </button>
+                        </Transition.Child>
+                    </Transition>
                 </div>
                 <div className="border-l-2 col-span-3 flex-col">
                     <button

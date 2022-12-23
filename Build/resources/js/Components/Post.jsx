@@ -3,7 +3,7 @@ import React from "react";
 export default function Post (data) {
     return (
             <div
-                className="flex flex-col gap-2 bg-fixed rounded-b-lg relative lg:h-[60vh] overflow-auto bg-white"
+                className="flex flex-col gap-2 bg-fixed rounded-b-lg lg:h-[70vh] overflow-auto bg-white"
             >
                 <img className="object-contain" src={data.img} />
                 <div className="bg-white rounded-md">
