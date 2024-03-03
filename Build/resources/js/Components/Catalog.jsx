@@ -5,15 +5,12 @@ import { usePage } from "@inertiajs/inertia-react";
 const Catalog = (data) => {
     const { auth } = usePage().props.auth;
     return (
-        <div className="flex flex-col lg:col-span-5 gap-5">
-            <div className="p-5 shadow-md flex items-center justify-center">
-                <span className="text-center capitalize text-[40px] text-slate-600">
-                    {data.title}
-                </span>
-            </div>
-            <div className="grid grid-cols-2 gap-1 md:grid-cols-2 md:gap-3 lg:grid-cols-5 lg:gap-5">
-                {data.books.map((element) => (
-                    // (data.slice ? data.books.slice(0, 5) : data.books).map((element) => (
+        <div className="flex flex-col lg:p-5 md:p-5 dark:border dark:border-purple-container shadow-inner shadow-slate-500 rounded-md">
+            <span className="text-center capitalize text-slate-600 dark:text-indigo-300">
+                {data.title}
+            </span>
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-2 p-5">
+                {data.books.slice(0, 5).map((element) => (
                     <BookCategory
                         title={element.title}
                         price={element.price}

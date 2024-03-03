@@ -1,22 +1,17 @@
 import React from "react";
 import { Inertia } from "@inertiajs/inertia";
-import { usePage } from "@inertiajs/inertia-react";
 import { Transition } from "@headlessui/react";
+import { usePage } from "@inertiajs/inertia-react";
 import ApplicationLogo from "./ApplicationLogo";
 
-export default function IntroScene({ attr }) {
-    //dark
+export default function IntroScene({ book }) {
     const url = usePage().props.auth.user
         ? "detail.book.auth"
         : "detail.book.guest";
+
     return (
         <>
-            <div
-                className={
-                    "flex justify-center lg:flex-row inset-0"
-                    // +(true ? " dark:bg-slate-800" : "")
-                }
-            >
+            <div className="flex justify-center lg:flex-row inset-0">
                 <div className="absolute inset-x-0 top-[10rem] -z-10 transform-gpu overflow-hidden sm:top-[-20rem] bg-white/40 blur-lg">
                     <ApplicationLogo />
                 </div>
@@ -28,7 +23,7 @@ export default function IntroScene({ attr }) {
                                 enterFrom="opacity-0 -translate-x-full"
                                 enterTo="opacity-100 translate-x-0"
                             >
-                                <h1 className="text-center text-indigo-600 lg:text-[70px] text-[30px] font-mono font-black ">
+                                <h1 className="text-center text-indigo-600 lg:text-[70px] text-[30px] font-mono font-black">
                                     TSpace - Book
                                 </h1>
                             </Transition.Child>
@@ -44,31 +39,39 @@ export default function IntroScene({ attr }) {
                         </Transition>
                     </div>
                     <div className="flex justify-center items-end">
-                        <div className="flex gap-5">
-                            <Transition appear={true} show={true}>
-                                <Transition.Child
-                                    enter="transition duration-900 transform"
-                                    enterFrom="opacity-0 -translate-x-full"
-                                    enterTo="opacity-100 translate-x-0"
-                                >
-                                    <img
-                                        src={attr[0].path_img}
-                                        className="lg:w-[300px] lg:h-[450px]"
-                                    />
-                                </Transition.Child>
-                            </Transition>
-                        </div>
-                        <div className="capitalize absolute flex flex-col text-center gap-10">
-                            <button
-                                onClick={() => {
-                                    Inertia.get(url, { id: attr[0].id });
-                                }}
-                                className="motion-safe:animate-bounce text-[20px] bg-indigo-500 text-white rounded-3xl px-5 py-2 hover:bg-gradient-to-r from-indigo-600 to-indigo-400 duration-700 focus:rounded-3xl"
-                            >
-                                Buy now
-                            </button>
-                            <span className="ping bottom-0 text-[20px] p-2 text-white">best sale</span>
-                        </div>
+                        {book[0] ? (
+                            <>
+                                <div className="flex gap-5">
+                                    <Transition appear={true} show={true}>
+                                        <Transition.Child
+                                            enter="transition duration-900 transform"
+                                            enterFrom="opacity-0 -translate-x-full"
+                                            enterTo="opacity-100 translate-x-0"
+                                        >
+                                            <img
+                                                src={book[0].path_img}
+                                                className="lg:w-[300px] lg:h-[450px]"
+                                            />
+                                        </Transition.Child>
+                                    </Transition>
+                                </div>
+                                <div className="capitalize absolute flex flex-col text-center gap-10">
+                                    <button
+                                        onClick={() => {
+                                            Inertia.get(url, {
+                                                id: book[0].id,
+                                            });
+                                        }}
+                                        className="motion-safe:animate-bounce text-[20px] bg-indigo-500 text-white rounded-3xl px-5 py-2 hover:bg-gradient-to-r from-indigo-600 to-indigo-400 duration-700 focus:rounded-3xl"
+                                    >
+                                        Buy now
+                                    </button>
+                                    <span className="ping bottom-0 text-[20px] p-2 text-white">
+                                        best sale
+                                    </span>
+                                </div>
+                            </>
+                        ) : null}
                     </div>
                 </div>
             </div>

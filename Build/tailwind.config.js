@@ -11,7 +11,14 @@ module.exports = {
     ],
 
     theme: {
-        extend: {},
+        extend: {
+            colors: {
+                'purple-dark': '#090B1A',
+                'purple-container': '#3C427F ',
+                'purple-active': '#121534 ',
+                'fill-dark': '#4A55D0 '
+            }
+        },
     },
 
     plugins: [],

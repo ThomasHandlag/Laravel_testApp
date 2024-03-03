@@ -4,9 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Storage;
+// use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 use function Termwind\render;
+use Illuminate\Support\Facades\Hash;
 
 class SettingController extends Controller
 {
@@ -17,8 +18,8 @@ class SettingController extends Controller
     public function setImage(Request $request)
     {
         $user_id = $request->get('id');
-        $fexten = '.' . $request->file('file')->extension();
-        $path = $request->file('file')->storeAs('clients', strtolower(trim($request->get('name'))) . $user_id . $fexten, 'local');
+        $f_extension = '.' . $request->file('file')->extension();
+        $path = $request->file('file')->storeAs('clients', strtolower(substr(Hash::make($request->get('name')), 0, 10)) . $user_id . $f_extension, 'local');
         DB::update('UPDATE users SET path_img = :path_img WHERE id = :id', ['path_img' => $path, 'id' => $user_id]);
         return render('settings.auth');
     }
@@ -33,7 +34,7 @@ class SettingController extends Controller
                 'phone' => $request->get('phone'),
                 'email' => $request->get('email'),
                 'gender' => $request->get('gender')
-            ]
+            ] 
         );
         // return render('settings.auth');
     }

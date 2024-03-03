@@ -16,36 +16,36 @@ import { FaIntercom } from "react-icons/fa";
 
 const Footer = () => {
     return (
-        <div className="flex flex-col bg-white">
-            <div className="flex lg:flex-row flex-col bg-violet-800 justify-between px-5">
+        <div className="flex flex-col bg-indigo-100 w-full">
+            <div className="flex lg:flex-row flex-col bg-indigo-100 justify-between px-5 shadow-lg">
                 <NavLink href={"/"} className={" bg-transparent"}>
                     <img src={tspace} className="w-[180px] h-[60px]" />
                 </NavLink>
                 <div className="flex flex-row gap-5 items-center justify-start">
-                    <div className="text-[25px] font-bold  text-white p-2 text-center">
+                    <div className="text-xl font-bold  text-indigo-400 p-2 text-center">
                         Follow us
                     </div>
                     <a
                         href={"https://facebook.com"}
-                        className="text-[35px] text-white"
+                        className="text-[35px] text-indigo-400 rounded-md"
                     >
                         <AiFillFacebook />
                     </a>
                     <a
                         href={"https://instagram.com"}
-                        className="text-[35px] text-white"
+                        className="text-[35px] text-indigo-400"
                     >
                         <AiFillInstagram />
                     </a>
                     <a
                         href="https://github.com/ThomasHandlag/Laravel_testApp"
-                        className="text-[35px] text-white "
+                        className="text-[35px] text-indigo-400 "
                     >
                         <AiFillGithub />
                     </a>
                     <a
                         href={"https://reddit.com"}
-                        className="text-[35px] text-white"
+                        className="text-[35px] text-indigo-400"
                     >
                         <AiFillRedditCircle />
                     </a>
@@ -53,7 +53,7 @@ const Footer = () => {
             </div>
             <div className="flex flex-col lg:flex-row lg:px-10 lg:pb-10 px-5 pb-5 pt-5 gap-5 justify-between">
                 <div className="flex flex-col">
-                    <span className="text-[25px] flex flex-row gap-2 items-center">
+                    <span className="text-xl flex flex-row gap-2 items-center">
                         Address <MdLocationPin />
                     </span>
                     <span className="break-words">
@@ -69,7 +69,7 @@ const Footer = () => {
                     ></iframe>
                 </div>
                 <div className="flex flex-col">
-                    <span className="text-[25px] flex flex-row gap-2 items-center">
+                    <span className="text-xl flex flex-row gap-2 items-center">
                         Contact <AiFillPhone />
                     </span>
                     <span className="flex items-center gap-2 break-words p-2 border-b-2 hover:border-indigo-500">
@@ -93,7 +93,7 @@ const Footer = () => {
                     </span>
                 </div>
                 <div className="flex flex-col gap-5 capitalize">
-                    <span className="text-[25px] flex flex-row gap-2 items-center">
+                    <span className="text-xl flex flex-row gap-2 items-center">
                         usefull links <AiOutlineLink />
                     </span>
                     <a
@@ -134,7 +134,7 @@ const Footer = () => {
                     </a>
                 </div>
                 <div className="flex flex-col gap-5 capitalize">
-                    <span className="text-[25px] flex flex-row gap-2 items-center">
+                    <span className="text-xl flex flex-row gap-2 items-center">
                         TSpace pages <FaIntercom />
                     </span>
                     <a
@@ -175,7 +175,7 @@ const Footer = () => {
                     </a>
                 </div>
             </div>
-            <span className="p-2 text-center bg-violet-700 text-white font-medium">
+            <span className="p-2 text-center bg-indigo-200 text-indigo-400 font-medium">
                 @2022TSpace.Inc
             </span>
         </div>

@@ -33,17 +33,24 @@ class BooksController extends Controller
             return $arr_p;
         };
 
+        $best_sale_qr = DB::select(
+            "SELECT * FROM (SELECT b.* FROM books b INNER JOIN order_detail o ON o.book_id = b.id GROUP BY b.id, b.title, b.price, b.author, b.quantity, b.price, b.path_img, b.catalog_id, b.description, b.type_book, b.mass, b.created_at ORDER BY sum(b.quantity) DESC) AS dbook LIMIT 1"
+        );
+
+        $best_sale=null;
+
+        if ($best_sale_qr) 
+            $best_sale = $best_sale_qr;
+        else $best_sale = array_slice(DB::select("SELECT * FROM books"), 0, 1);
+
         foreach ($catalogs as $catalog) {
             array_push($data, $maps($catalog, $books));
         }
-        // dd($best);
         return DB::connection()->getDatabaseName() ? Inertia::render(
             'Home',
             [
                 'data' => $data,
-                'best_sale' => DB::select(
-                    "SELECT * FROM (SELECT b.* FROM books b INNER JOIN order_detail o ON o.book_id = b.id GROUP BY b.id, b.title, b.price, b.author, b.quantity, b.price, b.path_img, b.catalog_id, b.description, b.type_book, b.mass, b.created_at ORDER BY sum(quan) DESC) AS dbook LIMIT 1"
-                ),
+                'best_sale' => $best_sale,
                 'news' => DB::select("SELECT * FROM posts ORDER BY date_post LIMIT 4")
             ]
         ) : null;

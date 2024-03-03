@@ -75,15 +75,15 @@ class AdminController extends Controller
         $cat = $request->get('data')['cat_id'];
 
         $fexten = '.' . $request->file('path_img')->extension();
-        $path_img  = $request->file('path_img')->storeAs('images', strtolower(trim($title)) . $fexten, 'local');
+        $path_img  = $request->file('path_img')->storeAs('images', $this->generateRandomFileName() . $fexten, 'local');
 
         DB::insert("INSERT INTO books(title, author, price, mass, quantity, catalog_id, description, path_img, type_book) VALUES('$title', '$author', $price, '$mass', $quantity, $cat, '$des', '$path_img', '$type')");
         return Inertia::render('Admin/AdminPage');
     }
     public function delete(Request $request)
     {
-        // $f = trim(strchr(DB::select("SELECT path_img FROM books WHERE id=:id", ['id' => $request->get('id')])[0]->path_img , "/"), "/");
-        // Storage::delete($f);
+        $f = trim(strchr(DB::select("SELECT path_img FROM books WHERE id=:id", ['id' => $request->get('id')])[0]->path_img , "/"), "/");
+        Storage::delete($f);
         DB::delete("DELETE FROM books WHERE id = :id", ['id' => $request->get('id')]);
         return redirect()->route('admin');
     }
@@ -248,4 +248,17 @@ class AdminController extends Controller
             ]
         );
     }
+    private function generateRandomFileName() {
+        $characters = '0123456789abcdefghijklmnopqrstuvwxyz';
+        $randomString = '';
+        $length = mt_rand(8, 15);
+      
+        for ($i = 0; $i < $length; $i++) {
+          $randomString .= $characters[rand(0, strlen($characters) - 1)];
+        }
+      
+        $fileName = $randomString;
+      
+        return $fileName;
+      }
 }

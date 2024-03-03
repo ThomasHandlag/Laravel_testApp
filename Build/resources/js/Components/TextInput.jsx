@@ -35,6 +35,7 @@ export default function TextInput({
             onChange={(e) => handleChange(e)}
             placeholder={placeholder}
             defaultValue={defaultValue}
+            min={0}
         />
     );
 }

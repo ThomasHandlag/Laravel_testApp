@@ -18,6 +18,7 @@ return new class extends Migration
             $table->integer('user_id');
             $table->string('content');
             $table->date('date_comt');
+            $table->foreign('book_id')->references('id')->on('books');
         });
     }
 
